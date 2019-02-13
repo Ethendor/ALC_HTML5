@@ -33,6 +33,8 @@ var npcNames = ["Jeffory", "Steven", "Bob", "Darius", "Courtney"];
 // Guild Quest Varible
 var guildQuest1 = false;
 
+var seduced = false;
+
 Game();
 //Opening function
 function Game(){
@@ -101,7 +103,7 @@ function Game(){
         }
                 
         function Inn(){
-            var inn = prompt("Well " + jeffName + " this is the place of heart and soul, the place every adventurer dreams of. Here folks of all types stay. It is a clean and huge Inn, made up of wood it almost looks like a huge cabin. In the corner you see a banner and members from the Adventurer Guild saying they're hiring. At the bar are you see the barkeeper and some guests are talking about politics. And Upstairs there is a bed you can sleep on \n -Talk to Guild \n -Chat with Barkeeper \n -Sleep").toLowerCase();
+            var inn = prompt("Well " + jeffName + " this is the place of heart and soul, the place every adventurer dreams of. Here folks of all types stay. It is a clean and huge Inn, made up of wood it almost looks like a huge cabin. In the corner you see a banner and members from the Adventurer Guild saying they're hiring. At the bar are you see the barkeeper and some guests are talking about politics. And Upstairs there is a bed you can sleep on \n -Talk to Guild \n -Chat with Barkeeper \n -Sleep \n -Back to City").toLowerCase();
             
             // Start Guild Quest Line
             if(inn == "talk to guild" || inn == "guild"){
@@ -112,7 +114,7 @@ function Game(){
                         alert("Ba dum da dum! You got your first quest, now go cut some grass!");
                         alert("Oh before you go let me give you our most prized possesion.");
                         (inventory.lawnMower ++);
-                        alert("Ba dum da dum! You got the completley normal Lawn Mower");
+                        alert("Ba dum da dum! You got the radical Lawn Mower");
                     
                         Grass();
                     
@@ -129,7 +131,7 @@ function Game(){
                                 break;
                                 
                             case "mow":
-                                alert("You try to mow it down but because it is very mighty, so both your completley normal lawnmower and the mighty grass died");
+                                alert("You try to mow it down but because it is very mighty, so both your radical lawnmower and the mighty grass died");
                                 (inventory.lawnMower --);
                                 // Save that you finished the quest
                                 guildQuest1 = true;
@@ -226,6 +228,9 @@ function Game(){
                     Inn();
                 }
             }
+            else if(inn == "back to city"|| inn == "city"){
+                City();
+            }
             else{
                 alert("I don't understand " + inn + ", you dummy!");
                 Inn();
@@ -268,19 +273,93 @@ function Game(){
         }
         
         function Dungeon(){
-            var cell = prompt("You wake up in a dark cell the only light coming from a guard a few feet away with a lantern by his waist you hear his keys everytime he moves. \n -Investigate \n Seduce Guard")
+            var cell = prompt("You wake up in a dark cell the only light coming from a guard a few feet away with a lantern by his waist you hear his keys everytime he moves. \n -Investigate \n -Seduce Guard \n -Try Lock").toLowerCase();
             
             if(cell == "investigate"){
                 
             }
             else if(cell == "seduce guard" || cell == "seduce" || cell == "guard"){
                 if(male == true){
-                    alert("The guard is unfortuantley not gay and you were unable to seduce him")
+                    alert("The guard is unfortuantley not gay and you were unable to seduce him");
+                    Dungeon();
                 }
                 else if(female == true){
-                    alert("The guard fell into your trap and you were able to get")
+                    if(seduced == false){
+                        alert("The guard fell into your trap and he came close enough to the cell that you were able to get the key off him without him noticing");
+                        (inventory.key ++);
+                        seduced = true;
+                        Dungeon();
+                    }
+                    else{
+                        alert("You already have gotten the key from the guard");
+                        Dungeon();
+                    }
+                }
+                else{
+                    alert("The guard had no idea whether or not to be attracted to you, and in his confusion he did not come closer");
+                    Dungeon();
                 }
             }
-        }  
+            else if(cell == "lock" || cell == "try lock"){
+                if(inventory.key > 0){
+                    (inventory.key --);
+                    alert("The key was so rusted that it broke while you opened the door, but the cell is open now but the guard sees you and tries to stop you");
+                    
+                    Guard();
+                    // Guard Encounter
+                    function Guard(){
+                        var guard = prompt("An ordinary prison guard appeared. He stares at you menacingly as you see him reach for his sword. He has 2hp \n -Mow him Down. \n -Attack with Sword. \n -Shout \n -Drop Kick \n -Run Away").toLowerCase();
+                        
+                        switch(guard){
+                            case "mow him down":
+                                if(inventory.lawnMower > 0){
+                                    alert("You grab your radical lawnmower and attempt to run him over, he loses his legs in the process, but he still is able to fight");   
+                                }
+                                else{
+                                    alert("You don't have a lawnmower silly billy");
+                                    Guard();
+                                }
+                                break;
+                                
+                            case "attack with sword":
+                                if(inventory.sword > 0){
+                                    alert("You attack the guard right before he can pick up his sword, and since you caught him by surprise, he dies in one hit")
+                                }
+                                else{
+                                    alert("What? Did you suddenly think you had a sword");
+                                    Guard();
+                                }
+                                break;
+                                
+                            case "shout":
+                                
+                                break;
+                                
+                            case "drop kick":
+                                
+                                break;
+                                
+                            case "run away":
+                                alert("You attempt to run away but because the guard is blocking the exit you run back into the cell where the guard locks the door");
+                                Dungeon();
+                                break;
+                                
+                            default:
+                                alert("I don't understand " + guard + ".")
+                                Guard();
+                        }
+                        
+                    }
+                }
+                else{
+                    alert("The Cell was firmly locked, if only you had a key");
+                    Dungeon();
+                }
+            }
+            else{
+                alert("I don't understand " + cell + ", you dummy");
+                Dungeon();
+            }
+        }
     }
 }
