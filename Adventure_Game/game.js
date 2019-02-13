@@ -24,7 +24,8 @@ var inventory = {
     coins: 0,
     sword: 0,
     key: 0,
-    lawnMower: 0
+    lawnMower: 0,
+    hp: 3
 }
 
 // declare array
@@ -77,14 +78,14 @@ function Game(){
     
     // Game Begins
     function City(){
-        var city = prompt("Well " + jeffName + " you're here in the city of Taliman. One of the richest and most beatiful cities in Cloudborg. Filled with huge shops and villages and a strong millitary that houses inside the castle. The ground is made of white fluffy cloud and the feel is very heavenly. Here you see many places that to explore. You can go to the Inn where many adventurers find their purpose and spirit. The Castle also has a great training grounds and equipment for new adventurers. There's also some exciting Mountains to the left with tons of monsters. Or you can travel to the ground. \n -Go to Inn \n -Go to Castle \n -Go to the Mountains \n -Travel to the ground").toLowerCase();
+        var city = prompt("Well " + jeffName + " you're here in the city of Taliman. One of the richest and most beatiful cities in Cloudborg. Filled with huge shops and villages and a strong millitary that houses inside the castle. The ground is made of white fluffy cloud and the feel is very heavenly. Here you see many places that to explore. You can go to the Inn where many adventurers find their purpose and spirit. The Castle also has a great training grounds and equipment for new adventurers. There's also some exciting Mountains to the left with tons of monsters. Or you can travel to the ground. You also see a shop with lots of equipment \n -Go to Inn \n -Go to Castle \n -Go to the Mountains \n -Travel to the ground \n Go to Shop").toLowerCase();
         
         if(city == "go to inn" || city == "inn"){
             Inn();
         }
         
         else if(city == "go to castle" || city == "castle"){
-            Castle();
+            CastleGate();
         }
         
         else if(city == "go to the Mountains" || city == "mountains"){
@@ -92,9 +93,12 @@ function Game(){
         }
         
         else if(city == "travel to ground" || city == "ground"){
-            
             alert("You Jumped off the Cloud you were on and died on impact, Silly " + jeffName + " what did you think was gonna happen, I can revive you if you would like");
             City();
+        }
+        
+        else if(city == "go to shop" || city == "shop"){
+            alert("Tom: *southern accent* Howdy pardner, I got some great goods here for you to do some buying. ")
         }
         
         else{
@@ -237,7 +241,7 @@ function Game(){
             }
         }
         
-        function Castle(){
+        function CastleGate(){
             var castleEntrance = prompt("Impressive isn't " + jeffName + " you stand at a huge gate you can see 20 or so towers in the distance. Here you see this massive fortress made out of red and black brick. You approach the gate two guards are there holding spears looking at you menacingly. One of the guards yell at you to state your business. \n -Run Away \n -None of your business \n -Here to Loot \n -I Need to See the King \n -Here to Train").toLowerCase();
             
             if(castleEntrance == "run away" || castleEntrance == "run"){
@@ -246,7 +250,7 @@ function Game(){
             
             else if(castleEntrance == "none of your business" || castleEntrance == "business"){
                 alert("The guard yells at you telling you that scumbags like you have no business here");
-                Castle();
+                CastleGate();
             }
             
             // Dungeon Quest Line
@@ -313,7 +317,18 @@ function Game(){
                         switch(guard){
                             case "mow him down":
                                 if(inventory.lawnMower > 0){
-                                    alert("You grab your radical lawnmower and attempt to run him over, he loses his legs in the process, but he still is able to fight");   
+                                    alert("You grab your radical lawnmower and attempt to run him over, he loses his legs in the process, but he still is able to fight, he attacks you with his sword for 1hp");   
+                                    (inventory.hp -= 1);
+                                    if(inventory.hp <= 0){
+                                        alert("You died and your skeleton rotted in the dungeons forever, but since I'm nice I revived you")
+                                        (inventory.hp += 3)
+                                        City();
+                                    }
+                                    else{
+                                        alert("You ran over him again with your radical lawnmower and he died, he dropped his sword in the process");
+                                        (inventory.sword += 1);
+                                        alert("Ba dum da da! You got the totally normal guard issued sword.");
+                                    }
                                 }
                                 else{
                                     alert("You don't have a lawnmower silly billy");
@@ -324,6 +339,8 @@ function Game(){
                             case "attack with sword":
                                 if(inventory.sword > 0){
                                     alert("You attack the guard right before he can pick up his sword, and since you caught him by surprise, he dies in one hit")
+                                    alert("You go up the stairs which bring you into the dungeon");
+                                    Castle();
                                 }
                                 else{
                                     alert("What? Did you suddenly think you had a sword");
@@ -332,11 +349,33 @@ function Game(){
                                 break;
                                 
                             case "shout":
-                                
+                                alert("YOU SHOUTED AT THE GUARD! He was intimidated but he noticed you were a weakling and still attacked you");
+                                (inventory.hp -= 1);
+                                if(inventory.hp <= 0){
+                                    alert("You died and your skeleton rotted in the dungeons forever, but since I'm nice I revived you");
+                                    (inventory.hp += 3)
+                                    City();
+                                }
+                                else{
+                                    Guard();
+                                }
                                 break;
                                 
                             case "drop kick":
-                                
+                                alert("You caught him by surprise and knocked him down to the ground. He landed in a bed of spikes and died immediately, but in his fall he swinged his sword and attacked you for 1hp");
+                                (inventory.hp -= 1);
+                                if(inventory.hp <= 0){
+                                    alert("You died and your skeleton rotted in the dungeons forever, but since I'm nice I revived you");
+                                    (inventory.hp += 3);
+                                    City();
+                                }
+                                else{
+                                    alert("His sword is still suck in your body, and you pull it out");
+                                    (inventory.sword += 1);
+                                    alert("Ba dum da da! You got the completley ordinary bloody guard issued sword");
+                                    alert("You go up the stairs which bring you into the dungeon");
+                                    Castle();
+                                }
                                 break;
                                 
                             case "run away":
