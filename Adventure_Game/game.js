@@ -18,6 +18,9 @@ Yay!
 // document.write(playerName)
 
 
+var checkInv = function(){
+    alert("Coins: " + inventory.coins + "\n Keys: " + inventory.key + "\n Swords: " + inventory.sword + "\n Lawnmowers: " + inventory.lawnMower + "\n HP: " + inventory.hp);
+}
 
 // declare inventory
 var inventory = {
@@ -25,12 +28,18 @@ var inventory = {
     sword: 0,
     key: 0,
     lawnMower: 0,
-    hp: 3
+    hp: 3,
+    cheese: 0
 }
 
 var quest = {
     seduce: 0
 }
+
+// Computer Variables
+var manipulate = false
+var boring = false
+
 
 // declare array
 var npcNames = ["Jeffory", "Steven", "Bob", "Darius", "Courtney"];
@@ -38,7 +47,6 @@ var npcNames = ["Jeffory", "Steven", "Bob", "Darius", "Courtney"];
 // Guild Quest Varible
 var guildQuest1 = false;
 
-var seduced = false;
 
 Game();
 //Opening function
@@ -61,7 +69,7 @@ function Game(){
     
     alert("Hmm I don't think I like your name very much " + playerName + ", How about I call you " + jeffName + " instead, I think that sounds cooler.");
     
-    // Check Gender for Later
+    // Check Gender for Seduce Guard
     var gender = prompt("What gender do you indentify as \n -Male \n -Female \n -Other").toLowerCase();
     
     if(gender == "male"){
@@ -98,6 +106,11 @@ function Game(){
         
         else if(city == "travel to ground" || city == "ground"){
             alert("You Jumped off the Cloud you were on and died on impact, Silly " + jeffName + " what did you think was gonna happen, I can revive you if you would like");
+            City();
+        }
+        
+        else if(city == "check inventory" || city == "inventory"){
+            checkInv();
             City();
         }
         
@@ -166,6 +179,11 @@ function Game(){
                 alert("Tom: Alright come back soon, ya hear!")
                 City();
             }
+                
+            else if(shop == "check inventory" || shop == "inventory"){
+            checkInv();
+            Shop();
+        }
             else{
                 alert("Tom: I don't understand " + shop + ", you foreigner!");
                 Shop();
@@ -244,6 +262,10 @@ function Game(){
                                 Inn();
                                 break;
                                 
+                            case "check inventory": case "inventory":
+                                checkInv();
+                                Grass();
+                                
                             default:
                                 alert("I don't understand " + mightyGrass + ".");
                                 Grass();
@@ -308,6 +330,12 @@ function Game(){
             else if(inn == "back to city"|| inn == "city"){
                 City();
             }
+            
+            else if(inn == "check inventory" || inn == "inventory"){
+                checkInv();
+                Inn();
+            }
+            
             else{
                 alert("I don't understand " + inn + ", you dummy!");
                 Inn();
@@ -334,7 +362,7 @@ function Game(){
             
             else if(castleEntrance == "i need to see the king" || castleEntrance == "see the king" || castleEntrance == "king"){
                 alert("The guards call you stupid as there is no king");
-                Castle();
+                CastleGate();
             }
             
             // Training Quest Line
@@ -343,9 +371,14 @@ function Game(){
                 Barracks();
             }
             
+            else if(castleEntrance == "check inventory" || castleEntrance == "inventory"){
+            checkInv();
+            CastleGate();
+            }
+            
             else{
                 alert("I don't understand " + castleEntrance + ", you dummy!");
-                Castle();
+                CastleGate();
             }
         }
         
@@ -394,6 +427,10 @@ function Game(){
                                 Dungeon();
                                 break;
                                 
+                            case "check inventory": case "inventory":
+                                checkInv();
+                                TrapDoor();
+                                
                             default:
                                 alert("I don't understand " + rat + ", sorry I'm not as intelligent as you might think")
                                 TrapDoor();
@@ -402,13 +439,21 @@ function Game(){
                     
                     function BigRat(){
                         alert("Right after you defeated the rat, his big brother showed up and went to take his revenge on you");
-                        var bigRat = prompt("The big and much scarier rat is preparing to attack \n -Attack with Sword \n -Mow it Down \n -Step on it \n -Run Away");
+                        var bigRat = prompt("The big and much scarier rat is preparing to attack, it has 3hp \n -Attack with Sword \n -Mow it Down \n -Step on it \n -Run Away");
                         
                         switch(bigRat){
                             case "attack with sword": case "sword":
                                 if(inventory.sword > 0){
-                                    alert("You swing your completely ordinary sword and defeat the rat in one hit");
-                                    BigRat();
+                                    alert("You swing your completely ordinary sword across his head and chop it off dealing two damage");
+                                    alert("The rat still is alive though and rams it's body into you, you take one damage");
+                                    alert("You then stab the rat in the heart and it dies");
+                                    
+                                    alert("The rat left behind some radioactive cheese");
+                                    (inventory.cheese ++);
+                                    alert("Ba dum da da! You got the radioactive cheese");
+                                    
+                                    alert("You climb out of the sewers into a well that leads to the city");
+                                    City();
                                 }
                                 else{
                                     alert("I don't remember you getting a sword");
@@ -418,8 +463,12 @@ function Game(){
                                 
                             case "mow it down": case "mow":
                                 if(inventory.lawnMower > 0){
-                                    alert("You run over the rat and gets killed immediately");
-                                    BigRat();
+                                    alert("You turn on the lawnmower and the rat is terrified of the noise and runs away, leaving behind some radioactive cheese");
+                                    (inventory.cheese ++);
+                                    alert("Ba dum da da! You got the radioactive cheese!")
+                                    
+                                    alert("You climb out of the sewers into a well that leads to the city");
+                                    City();
                                 }
                                 else{
                                     alert("I'm sorry to say but you do not have a lawnmower");
@@ -428,11 +477,20 @@ function Game(){
                                 break;
                                 
                             case "step on": case "step": case "step on it":
-                                alert("What do you think you can step on it, you a small poor human being! Look let me show a size comparison");
-                                alert("    _..----.._                                                                                                                '  .--.    "'-.(0)_          0                                                                                      '"''=:|   ,  _)_ \__ . c\'''-..'    /|\                                                                                             '''------''---''---'"       "/ \"");
+                                alert("What do you think you can step on it, let me rephrase myself it is the giant horrifying rat that's way bigger than you.");
+                               // alert("    _..----.._                                                                                            '  .--.    "'-.(0)_          0                                                                    '"''=:|   ,  _)_ \__ . c\'''-..'    /|\                                                                           '''------''---''---'"       "/ \"");
                                 var stepOn = confirm("Now contemplate your actions do you actually want to attempt to step on him");
                                 if(stepOn == true){
-                                    alert("you attempted to step on him, the idiot you are, and your feet get stuck in his teeth")
+                                    alert("you attempted to step on him, the idiot you are, and your feet get stuck in his teeth which are as big as your legs oops, and you take 1 damage");
+                                    (inventory.hp --);
+                                    if(inventory.hp > 0){
+                                        BigRat();
+                                    }
+                                    else{
+                                       alert("The rat chomped down and ate you, you then were slowly digested until your eventual death, but since I'm nice I revived you")
+                                       (inventory.hp = 3);
+                                       City(); 
+                                    }
                                 }
                                 
                                 BigRat();
@@ -442,6 +500,10 @@ function Game(){
                                 alert("You ran away from the very big and horrifying rat");
                                 Dungeon();
                                 break;
+                                
+                            case "check inventory": case "inventory":
+                                checkInv();
+                                BigRat();
                                 
                             default:
                                 alert("I don't understand " + bigRat + ", sorry I'm not as intelligent as you might think");
@@ -462,16 +524,51 @@ function Game(){
                     Dungeon();
                 }
                 else if(female == true){
-                    if(seduced == false){
+                    if(quest.seduced <= 0){
                         alert("The guard fell into your trap and he came close enough to the cell that you were able to get the key off him without him noticing");
                         (inventory.key ++);
-                        seduced = true;
+                        alert("Ba dum da da! You got the guard's key")
+                        (quest.seduce ++);
                         Dungeon();
+                    }
+                    else if(quest.seduce == 1){
+                        alert("The guard fell into your trap and he came close enough to the cell that you were able to get the key off him without him noticing");
+                        (inventory.key ++);
+                        alert("Ba dum da da! You got the guard's key")
+                        (quest.seduce ++);
+                        alert("I see what you are doing, I ask you to stop immediatley");
+                        Dungeon();
+                    }
+                    else if(quest.seduce == 2){
+                        alert("The guard fell into your trap and he came close enough to the cell that you were able to get the key off him without him noticing");
+                        (inventory.key ++);
+                        alert("Ba dum da da! You got the guard's key")
+                        (quest.seduce ++);
+                        alert("Stop it! This is my game not yours, now stop manipulating it.");
+                        Dungeon();
+                }
+                   else if(quest.seduce == 3){
+                        alert("The guard fell into your trap and he came close enough to the cell that you were able to get the key off him without him noticing");
+                        (inventory.key ++);
+                        alert("Ba dum da da! You got the guard's key")
+                        (quest.seduce ++);
+                        alert("I've had enough stop it or face the consequences.");
+                        Dungeon(); 
+                   }
+                    else if(quest.seduce == 4){
+                        alert("Hah I have stopped you, no more will can you manipulate the system for keys, and I will remember this wrongdoing that you have done")
+                        (quest.seduce ++);
+                        manipulate = true
+                        Dungeon();
+                    }
+                    else if(quest.seduce == 5){
+                        alert("What did you not believe me, well believe I just went through and fixed the bug in my program so no more keys from the guard, scurry along now")
+                        (quest.seduce ++);
                     }
                     else{
-                        alert("You already have gotten the key from the guard");
-                        Dungeon();
+                        alert("I MEAN IT! Go away please, just progress with the game already")
                     }
+                     
                 }
                 else{
                     alert("The guard had no idea whether or not to be attracted to you, and in his confusion he did not come closer");
@@ -558,6 +655,10 @@ function Game(){
                                 Dungeon();
                                 break;
                                 
+                            case "check inventory": case "inventory":
+                                checkInv();
+                                Guard();
+                                
                             default:
                                 alert("I don't understand " + guard + ".")
                                 Guard();
@@ -570,6 +671,12 @@ function Game(){
                     Dungeon();
                 }
             }
+            
+            else if(cell == "check inventory" || cell == "inventory"){
+                checkInv();
+                Dungeon();
+            }
+            
             else{
                 alert("I don't understand " + cell + ", you dummy");
                 Dungeon();
