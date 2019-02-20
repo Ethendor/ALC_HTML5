@@ -29,23 +29,32 @@ var inventory = {
     key: 0,
     lawnMower: 0,
     hp: 3,
-    cheese: 0
+    cheese: 0,
+    potion: 0
 }
 
 var quest = {
-    seduce: 0
+    guild : 0,
+    seduced: 0,
+    deaths: 0
 }
 
+//Gender
+var male = false;
+var female = false;
+var otherGen = false;
+
 // Computer Variables
-var manipulate = false
-var boring = false
+var manipulate = false;
+var boring = false;
+var prisoner = false;
+var mainQuest = false;
 
 
 // declare array
 var npcNames = ["Jeffory", "Steven", "Bob", "Darius", "Courtney"];
 
-// Guild Quest Varible
-var guildQuest1 = false;
+
 
 
 Game();
@@ -90,7 +99,7 @@ function Game(){
     
     // Game Begins
     function City(){
-        var city = prompt("Well " + jeffName + " you're here in the city of Taliman. One of the richest and most beatiful cities in Cloudborg. Filled with huge shops and villages and a strong millitary that houses inside the castle. The ground is made of white fluffy cloud and the feel is very heavenly. Here you see many places that to explore. You can go to the Inn where many adventurers find their purpose and spirit. The Castle also has a great training grounds and equipment for new adventurers. There's also some exciting Mountains to the left with tons of monsters. Or you can travel to the ground. You also see a shop with lots of equipment \n -Go to Inn \n -Go to Castle \n -Go to the Mountains \n -Travel to the ground \n -Go to Shop").toLowerCase();
+        var city = prompt("Well " + jeffName + " you're here in the city of Taliman. One of the richest and most beatiful cities in Cloudborg. Filled with huge shops and villages and a strong millitary that houses inside the castle. The ground is made of white fluffy cloud and the feel is very heavenly. Here you see many places that to explore. You can go to the Inn where many adventurers find their purpose and spirit. The Castle also has a great training grounds and equipment for new adventurers. There's also some exciting Mountains to the left with tons of monsters and the wizard's tower on top of them. Or you can travel to the ground. You also see a shop with lots of equipment. You also see a sketchy house off to the side that says 'In trouble with your local guards come inside' \n -Go to Inn \n -Go to Castle \n -Go to the Mountains \n -Travel to the ground \n -Go to Shop \n -Go in sketchy house").toLowerCase();
         
         if(city == "go to inn" || city == "inn"){
             Inn();
@@ -101,7 +110,14 @@ function Game(){
         }
         
         else if(city == "go to the Mountains" || city == "mountains"){
-            Mountain();
+            var areSure = confirm("Are you prepared to venture to the mountains, there are lots of monsters and challenges on the way");
+            if(areSure == true){
+                Mountains();
+            }
+            else{
+                City();
+            }
+            
         }
         
         else if(city == "travel to ground" || city == "ground"){
@@ -118,8 +134,191 @@ function Game(){
             alert("You enter the shop you see a lot of items for sale, There's a big sign showing how the radical lawnmower is on sale for only 100 gold coins");
             alert("Tom: *southern accent* Howdy pardner, I got some great goods here for you to do some buying. Please check out our lawnmowers they're amazing and definetly not on sale because they're aren't selling too good.");
             Shop();
+        }
+        
+        else if(city == "house" || city == "go in house" || city == "sketchy house" || city == "go in sketchy house"){
+            alert("You go inside you see a very dark room with a sketchy man in the corner on a desk with what seems to be a ton of paperwork");
+            if(prisoner == true){
+                alert("Sketchy man: I see you are in a bit of trouble with the guards, you have a bounty over your head " + jeffName + " but don't fret I know how to clear that in no time. All I need is for you to do something for me.");
+                alert("Sketchy man: Oh crap what was it again. No not that one, someone's already doing that for me. Nope that would increase the esrb rating. Oh no last time I even attempted that I almost lost my channel. Um here, just give me like 50 gold coins I don't have good work at the moment");
+                var sketchyQuest = confirm("Will you give him 50 coins to get rid of your bounty");
+                if(sketchyQuest == true){
+                    if(inventory.coins  >= 50){
+                        prisoner = false;
+                        alert("Ba dum da da! You no longer have a bounty on you, now you can go anywhere as you please");
+                        City();
+                    }
+                    else{
+                        alert("You don't have enough coins " + jeffName + " look I hate dealing with poor people so get rich then come back");
+                        City();
+                    }
+                }
+                else{
+                    alert("Sketchy man: Then leave me then, I need time to come up with better fetch quests");
+                    City();
+                }
+            }
+            else{
+                alert("Sketchy man: Why are you here " + jeffName + " you have no need of me please leave I have many buisnesses to attend to.");
+                City();
+            }
+        }
+        
+        else{
+            alert("I don't understand " + city + ", you dummy!");
+            City();
+        }
+                
+        function Inn(){
+            var inn = prompt("Well " + jeffName + " this is the place of heart and soul, the place every adventurer dreams of. Here folks of all types stay. It is a clean and huge Inn, made up of wood it almost looks like a huge cabin. In the corner you see a banner and members from the Adventurer Guild saying they're hiring. At the bar are you see the barkeeper and some guests are talking about politics. And Upstairs there is a bed you can sleep on and restore hp \n -Talk to Guild \n -Chat with Barkeeper \n -Sleep \n -Back to City").toLowerCase();
             
-            function Shop(){
+            // Start Guild Quest Line
+            if(inn == "talk to guild" || inn == "guild"){
+                if (quest.guild == 0){
+                    var guild1 = confirm("You express your interest in joining the guild, the recruiter there, Dalamas, tells you that when you join your first task will be to cut his grass! You'll get 200 gold coins for finsihing this task \n Do you accept");
+                
+                    if(guild1 == true){
+                        alert("Ba dum da dum! You got your first quest, now go cut some grass!");
+                        alert("Oh before you go let me give you our most prized possesion.");
+                        (inventory.lawnMower ++);
+                        alert("Ba dum da dum! You got the radical Lawn Mower");
+                    
+                        Grass();
+                    
+                    function Grass(){
+                        alert("You started cutting the grass in the Dalamas's backyard, it's a really hot and sunny day here in Taliman. You went down the rows of grass cutting them all but then you found a grass that was mightier than the rest.");
+                        
+                        var mightyGrass = prompt("The Mighty Grass stands in your way.\n -Bargain with it \n -Mow it down \n -Attack with Sword \n -Run Away").toLowerCase();
+                        
+                        switch(mightyGrass){
+                                
+                            case "bargain": case "bargain with it":
+                                alert("It seems that no matter how mighty the grass might be, it still doesn't understand the english language");
+                                Grass();
+                                break;
+                                
+                            case "mow": case "mow it down":
+                                alert("You try to mow it down but because it is very mighty, so both your radical lawnmower and the mighty grass died");
+                                (inventory.lawnMower --);
+                                // Save that you finished the quest
+                                (quest.guild = 1);
+                                
+                                alert("You cut all the Grass!");
+                                alert("You returned to the Inn where the guild gave you 200 gold coins, they hope to see you return soon");
+                                (inventory.coins += 200);
+                                Inn();
+                                
+                                break;
+                                
+                            case "sword": case "attack with sword": 
+                                if (inventory.sword > 0){
+                                    alert("You defeated the mighty grass");
+                                    // Save that you finished the quest
+                                    (quest.guild = 1);
+                                    
+                                    alert("You cut all the Grass!");
+                                    alert("You returned to the Inn where the guild gave you 200 gold coins, they hope to see you return soon");
+                                    (inventory.coins += 200);
+                                    Inn();
+                        
+                                }
+                                else{
+                                    alert("You don't have a sword, idiot!");
+                                    Grass();
+                                }
+                                break;
+                                
+                            case "run": case "run away":
+                                // Set cowards to true, similar to boring
+                                var coward = true;
+                                alert("You ran back to the inn apologizing to the guild they tell you it's alright because grass can be pretty scary, but you were denied your pay from the guild");
+                                Inn();
+                                break;
+                                
+                            case "check inventory": case "inventory":
+                                checkInv();
+                                Grass();
+                                break;
+                                
+                            default:
+                                alert("I don't understand " + mightyGrass + ".");
+                                Grass();
+                        }
+                    }
+                    
+                }
+                
+                    else{
+                        alert("Wow, aren't you boring " + jeffName + ".");
+                        // Set boring to true, important later on
+                        var boring = true;
+                        Inn();
+                }
+                    
+                }
+                else if (quest.guild == 1){
+                    var guild2 = confirm("Dalamas: " + jeffName + " back for another quest are ya, well you came just in time, we have another situation, some more folks needs some cutting are ya in.");
+                }
+            
+            }
+            
+            // Boring Lore Politics
+            else if(inn == "chat with barkeeper" || inn == "barkeeper" || inn == "chat"){
+                alert("Courtney: Hi I'm " + npcNames[4] + "! I'm the master of this joint right here, now you just sit down you must have tons of adventures to tell me about!");
+                
+                if(quest.guild == 1){
+                    alert("You tell her about the mighty grass");
+                    alert("Courtney: Oh that sounds so scary, well you're safe now. I have heard adventures of dragons and wizards but this story interests me so much how did such a mighty grass come into existance?");
+                    Inn();
+                }
+                else{
+                    var Barkeep1 = prompt(" -Lie \n -Tell Truth").toLowerCase();
+                    if (Barkeep1 == "lie"){
+                        alert("You tell her about a journey in the mountains where you defeated the evil Wizard Dragon, Drizard");
+                        alert("Courtney: Oh that's neat I guess. \n She can tell your lying.");
+                        Inn();
+                    }
+                    else if (Barkeep1 == "tell truth" || Barkeep1 == "truth"){
+                        alert("You tell her that you haven't been on any adventures yet");
+                        alert("Courtney: That's alright sweetie, I'll just tell you some stuff of my own. So I heard that the Castle Guard just gave up on looking for a king for Talisman. It's been almost three years since his death and they have not been able to find a worthy predecessor. I've heard we'll just vote on everything when we have to make a decision, that sounds so scary what if other people have wrong opinions. She rambled on more and more until you fell asleep on the counter. When you wake up you apologize to the Barkeeper and leave.");
+                        City();
+                    }
+                    else{
+                        alert("I don't understand " + Barkeep1 + ", you dummy!");
+                        Inn();
+                    }
+                }
+            }
+            
+            // Funny thief
+            else if(inn == "sleep"){
+                (inventory.hp = 3)
+                if (inventory.coins > 0){
+                    inventory.coins = 0;
+                    alert("While you were sleeping last night a thief came and stole all your money, but on the bright side your hp was restored");
+                    Inn();
+                }
+                else{
+                    alert("While you were sleeping last night a thief came and attempted to steal your money, but because you suck you had no money to steal, so you just had a nice restful sleep and your hp was restored");
+                    Inn();
+                }
+            }
+            else if(inn == "back to city"|| inn == "city"){
+                City();
+            }
+            
+            else if(inn == "check inventory" || inn == "inventory"){
+                checkInv();
+                Inn();
+            }
+            
+            else{
+                alert("I don't understand " + inn + ", you dummy!");
+                Inn();
+            }
+        }
+        
+        function Shop(){
             var shop = prompt("What would you like to buy \n -Ordinary Sword, 200 coins \n -Radical Lawnmower, 100 coins \n -Magic but rusted Key, 50 coins \n -Back to City").toLowerCase();
             if(shop == "ordinary sword" || shop == "sword"){
                 var buySword = confirm("Tom: A completley ordinary sword, it's good at killing enemies though, would you like to buy it only 200 coins!");
@@ -188,159 +387,7 @@ function Game(){
                 alert("Tom: I don't understand " + shop + ", you foreigner!");
                 Shop();
             }        
-            }    
-        }
-        
-        else{
-            alert("I don't understand " + city + ", you dummy!");
-            City();
-        }
-                
-        function Inn(){
-            var inn = prompt("Well " + jeffName + " this is the place of heart and soul, the place every adventurer dreams of. Here folks of all types stay. It is a clean and huge Inn, made up of wood it almost looks like a huge cabin. In the corner you see a banner and members from the Adventurer Guild saying they're hiring. At the bar are you see the barkeeper and some guests are talking about politics. And Upstairs there is a bed you can sleep on and restore hp \n -Talk to Guild \n -Chat with Barkeeper \n -Sleep \n -Back to City").toLowerCase();
-            
-            // Start Guild Quest Line
-            if(inn == "talk to guild" || inn == "guild"){
-                if (guildQuest1 == false){
-                    var guild1 = confirm("You express your interest in joining the guild, the recruiter there, Dalamas, tells you that when you join your first task will be to cut his grass! You'll get 200 gold coins for finsihing this task \n Do you accept");
-                
-                    if(guild1 == true){
-                        alert("Ba dum da dum! You got your first quest, now go cut some grass!");
-                        alert("Oh before you go let me give you our most prized possesion.");
-                        (inventory.lawnMower ++);
-                        alert("Ba dum da dum! You got the radical Lawn Mower");
-                    
-                        Grass();
-                    
-                    function Grass(){
-                        alert("You started cutting the grass in the Dalamas's backyard, it's a really hot and sunny day here in Taliman. You went down the rows of grass cutting them all but then you found a grass that was mightier than the rest.");
-                        
-                        var mightyGrass = prompt("The Mighty Grass stands in your way.\n -Bargain with it \n -Mow it down \n -Attack with Sword \n -Run Away").toLowerCase();
-                        
-                        switch(mightyGrass){
-                                
-                            case "bargain": case "bargain with it":
-                                alert("It seems that no matter how mighty the grass might be, it still doesn't understand the english language");
-                                Grass();
-                                break;
-                                
-                            case "mow": case "mow it down":
-                                alert("You try to mow it down but because it is very mighty, so both your radical lawnmower and the mighty grass died");
-                                (inventory.lawnMower --);
-                                // Save that you finished the quest
-                                guildQuest1 = true;
-                                
-                                alert("You cut all the Grass!");
-                                alert("You returned to the Inn where the guild gave you 200 gold coins, they hope to see you return soon");
-                                (inventory.coins += 200);
-                                Inn();
-                                
-                                break;
-                                
-                            case "sword": case "attack with sword": 
-                                if (inventory.sword > 0){
-                                    alert("You defeated the mighty grass");
-                                    // Save that you finished the quest
-                                    guildQuest1 = true;
-                                    
-                                    alert("You cut all the Grass!");
-                                    alert("You returned to the Inn where the guild gave you 200 gold coins, they hope to see you return soon");
-                                    (inventory.coins += 200);
-                                    Inn();
-                        
-                                }
-                                else{
-                                    alert("You don't have a sword, idiot!");
-                                    Grass();
-                                }
-                                break;
-                                
-                            case "run": case "run away":
-                                // Set cowards to true, similar to boring
-                                var coward = true;
-                                alert("You ran back to the inn apologizing to the guild they tell you it's alright because grass can be pretty scary, but you were denied your pay from the guild");
-                                Inn();
-                                break;
-                                
-                            case "check inventory": case "inventory":
-                                checkInv();
-                                Grass();
-                                
-                            default:
-                                alert("I don't understand " + mightyGrass + ".");
-                                Grass();
-                        }
-                    }
-                    
-                }
-                
-                    else{
-                        alert("Wow, aren't you boring " + jeffName + ".");
-                        // Set boring to true, important later on
-                        var boring = true;
-                        Inn();
-                }
-                    
-                }
-                else if (guildQuest1 == true){
-                    var guild2 = confirm("Dalamas: " + jeffName + " back for another quest are ya, well you came just in time, we have another situation, some more folks needs some cutting are ya in.");
-                }
-            
             }
-            
-            // Boring Lore Politics
-            else if(inn == "chat with barkeeper" || inn == "barkeeper" || inn == "chat"){
-                alert("Courtney: Hi I'm " + npcNames[4] + "! I'm the master of this joint right here, now you just sit down you must have tons of adventures to tell me about!");
-                
-                if(guildQuest1 == true){
-                    alert("You tell her about the mighty grass");
-                    alert("Courtney: Oh that sounds so scary, well you're safe now. I have heard adventures of dragons and wizards but this story interests me so much how did such a mighty grass come into existance?");
-                }
-                else{
-                    var Barkeep1 = prompt(" -Lie \n -Tell Truth").toLowerCase();
-                    if (Barkeep1 == "lie"){
-                        alert("You tell her about a journey in the mountains where you defeated the evil Wizard Dragon, Drizard");
-                        alert("Courtney: Oh that's neat I guess. \n She can tell your lying.");
-                    }
-                    else if (Barkeep1 == "tell truth" || Barkeep1 == "truth"){
-                        alert("You tell her that you haven't been on any adventures yet");
-                        alert("Courtney: That's alright sweetie, I'll just tell you some stuff of my own. So I heard that the Castle Guard just gave up on looking for a king for Talisman. It's been almost three years since his death and they have not been able to find a worthy predecessor. I've heard we'll just vote on everything when we have to make a decision, that sounds so scary what if other people have wrong opinions. She rambled on more and more until you fell asleep on the counter. When you wake up you apologize to the Barkeeper and leave.");
-                        City();
-                    }
-                    else{
-                        alert("I don't understand " + Barkeep1 + ", you dummy!");
-                        Inn();
-                    }
-                }
-            }
-            
-            // Funny thief
-            else if(inn == "sleep"){
-                (inventory.hp = 3)
-                if (inventory.coins > 0){
-                    inventory.coins = 0;
-                    alert("While you were sleeping last night a thief came and stole all your money, but on the bright side your hp was restored");
-                    Inn();
-                }
-                else{
-                    alert("While you were sleeping last night a thief came and attempted to steal your money, but because you suck you had no money to steal, so you just had a nice restful sleep and your hp was restored");
-                    Inn();
-                }
-            }
-            else if(inn == "back to city"|| inn == "city"){
-                City();
-            }
-            
-            else if(inn == "check inventory" || inn == "inventory"){
-                checkInv();
-                Inn();
-            }
-            
-            else{
-                alert("I don't understand " + inn + ", you dummy!");
-                Inn();
-            }
-        }
         
         function CastleGate(){
             var castleEntrance = prompt("Impressive isn't " + jeffName + " you stand at a huge gate you can see 20 or so towers in the distance. Here you see this massive fortress made out of red and black brick. You approach the gate two guards are there holding spears looking at you menacingly. One of the guards yell at you to state your business. \n -Run Away \n -None of your business \n -Here to Loot \n -I Need to See the King \n -Here to Train").toLowerCase();
@@ -383,13 +430,191 @@ function Game(){
         }
         
         function Dungeon(){
+            prisoner = true;
             var cell = prompt("You wake up in a dark cell the only light coming from a guard a few feet away with a lantern by his waist you hear his keys everytime he moves. \n -Investigate \n -Seduce Guard \n -Try Lock").toLowerCase();
             
             if(cell == "investigate"){
                 var trapDoor = confirm("You look around your cell, you see many skeletons and chains accross the floor but you are the only one in here, the door is made out out of solid steel bars, there's no way you'll be able to break them. You see a odd panel with a skeleton on top of it, moving him reveals that there is a trapdoor, will you go inside?");
-                if(trapdoor == true){
+                if(trapDoor == true){
                     TrapDoor();
-                    
+                }
+                else{
+                    Dungeon();
+                }
+            }
+            else if(cell == "seduce guard" || cell == "seduce" || cell == "guard"){
+                if(male == true){
+                    alert("The guard is unfortuantley not gay and you were unable to seduce him");
+                    Dungeon();
+                }
+                else if(female == true){
+                    if(quest.seduced == 0){
+                        alert("The guard fell into your trap and he came close enough to the cell that you were able to get the key off him without him noticing");
+                        (inventory.key += 1);
+                        alert("Ba dum da da! You got the guard's key");
+                        (quest.seduced += 1);
+                        Dungeon();
+                    }
+                    else if(quest.seduced == 1){
+                        alert("The guard fell into your trap and he came close enough to the cell that you were able to get the key off him without him noticing");
+                        (inventory.key += 1);
+                        alert("Ba dum da da! You got the guard's key");
+                        (quest.seduced += 1);
+                        alert("I see what you are doing, I ask you to stop immediatley");
+                        Dungeon();
+                    }
+                    else if(quest.seduced == 2){
+                        alert("The guard fell into your trap and he came close enough to the cell that you were able to get the key off him without him noticing");
+                        (inventory.key += 1);
+                        alert("Ba dum da da! You got the guard's key");
+                        (quest.seduced += 1);
+                        alert("Stop it! This is my game not yours, now stop manipulating it.");
+                        Dungeon();
+                }
+                   else if(quest.seduced == 3){
+                        alert("The guard fell into your trap and he came close enough to the cell that you were able to get the key off him without him noticing");
+                        (inventory.key += 1);
+                        alert("Ba dum da da! You got the guard's key");
+                        (quest.seduced += 1);
+                        alert("I've had enough stop it or face the consequences.");
+                        Dungeon(); 
+                   }
+                    else if(quest.seduced == 4){
+                        alert("Hah I have stopped you, no more can you manipulate the system for keys, and I will remember this wrongdoing that you have done");
+                        (quest.seduced += 1);
+                        manipulate = true;
+                        Dungeon();
+                    }
+                    else if(quest.seduced == 5){
+                        alert("What did you not believe me, well believe it I just went through and fixed the bug in my program so no more keys from the guard, scurry along now");
+                        (quest.seduced += 1);
+                        Dungeon();
+                    }
+                    else{
+                        alert("I MEAN IT! Go away please, just progress with the game already");
+                        Dungeon();
+                    }
+                     
+                }
+                else{
+                    alert("The guard had no idea whether or not to be attracted to you, and in his confusion he did not come closer");
+                    Dungeon();
+                }
+            }
+            else if(cell == "lock" || cell == "try lock"){
+                if(inventory.key > 0){
+                    (inventory.key -= 1);
+                    alert("The key was so rusted that it broke while you opened the door, but the cell is open now but the guard sees you and tries to stop you");
+                    Guard();   
+                }
+                else{
+                    alert("The Cell was firmly locked, if only you had a key");
+                    Dungeon();
+                }
+            }
+            
+            else if(cell == "check inventory" || cell == "inventory"){
+                checkInv();
+                Dungeon();
+            }
+            
+            else{
+                alert("I don't understand " + cell + ", you dummy");
+                Dungeon();
+            }
+        }
+        
+        // Guard Encounter
+                function Guard(){
+                    var guard = prompt("An ordinary prison guard appeared. He stares at you menacingly as you see him reach for his sword. He has 2hp \n -Mow him Down. \n -Attack with Sword. \n -Shout \n -Drop Kick \n -Run Away").toLowerCase();
+                        
+                     switch(guard){
+                        case "mow him down": case "mow":
+                            if(inventory.lawnMower > 0){
+                                alert("You grab your radical lawnmower and attempt to run him over, he loses his legs in the process, but he still is able to fight, he attacks you with his sword for 1hp");   
+                                (inventory.hp -= 1);
+                                 if(inventory.hp <= 0){
+                                    alert("You died and your skeleton rotted in the dungeons forever, but since I'm nice I revived you")
+                                    (inventory.hp = 3);
+                                    (quest.deaths ++);
+                                    City();
+                                }
+                                else{
+                                    alert("You ran over him again with your radical lawnmower and he died, he dropped his sword in the process");
+                                    (inventory.sword += 1);
+                                    alert("Ba dum da da! You got the totally normal guard issued sword.");
+                                    alert("You go up the stairs which bring you out of the dungeon into the castle");
+                                    Barracks();
+                                }
+                            }
+                            else{
+                                alert("You don't have a lawnmower silly billy");
+                                Guard();
+                            }
+                            break;
+                                
+                        case "attack with sword": case "sword": 
+                            if(inventory.sword > 0){
+                                alert("You attack the guard right before he can pick up his sword, and since you caught him by surprise, he dies in one hit. You would think they would've thought to take away your weapons.")
+                                alert("You go up the stairs which bring you out of the dungeon into the castle");
+                                Barracks();
+                            }
+                            else{
+                                alert("What? Did you suddenly think you had a sword");
+                                Guard();
+                            }
+                            break;
+                                
+                        case "shout":
+                            alert("YOU SHOUTED AT THE GUARD! He was intimidated but he noticed you were a weakling and still attacked you");
+                            (inventory.hp -= 1);
+                            if(inventory.hp <= 0){
+                                alert("You died and your skeleton rotted in the dungeons forever, but since I'm nice I revived you");
+                                (inventory.hp = 3)
+                                (quest.deaths ++);
+                                City();
+                            }
+                            else{
+                                Guard();
+                            }
+                            break;
+                                
+                        case "drop kick": case "kick":
+                            alert("You caught him by surprise and knocked him down to the ground. He landed in a bed of spikes and died immediately, but in his fall he swinged his sword and attacked you for 1hp");
+                            (inventory.hp -= 1);
+                            if(inventory.hp <= 0){
+                                alert("You died and your skeleton rotted in the dungeons forever, but since I'm nice I revived you");
+                                (inventory.hp = 3);
+                                (quest.deaths ++);
+                                City();
+                            }
+                            else{
+                                alert("His sword is still suck in your body, you pull it out");
+                                (inventory.sword += 1);
+                                alert("Ba dum da da! You got the completley ordinary bloody guard issued sword");
+                                alert("You go up the stairs which bring you out of the dungeon into the castle");
+                                Barracks();
+                             }
+                            break;
+                                
+                        case "run away": case "run":
+                            alert("You attempt to run away but because the guard is blocking the exit you run back into the cell where the guard locks the door");
+                            Dungeon();
+                            break;
+                                
+                        case "check inventory": case "inventory":
+                            checkInv();
+                            Guard();
+                            break;
+                                
+                        default:
+                            alert("I don't understand " + guard + ".");
+                            Guard();
+                    }
+                        
+                }
+        
+        
                     function TrapDoor(){
                         alert("You entered the trapdoor leading you to a cellar. The cellar is very dark and you can see water running through it, while traveling across you encounter a normally sized rat.");
                         var rat = prompt("The normally sized rat looks ready to attack at any time! \n -Attack with Sword \n -Mow it Down \n -Step on it \n -Run Away").toLowerCase();
@@ -399,6 +624,8 @@ function Game(){
                                 if(inventory.sword > 0){
                                     alert("You swing your completely ordinary sword and defeat the rat in one hit");
                                     BigRat();
+                                    (inventory.coins += 50);
+                                    alert("He dropped 50 coins. For a rat he somehow has a good amount of money");
                                 }
                                 else{
                                     alert("I don't remember you getting a sword");
@@ -409,6 +636,8 @@ function Game(){
                             case "mow it down": case "mow":
                                 if(inventory.lawnMower > 0){
                                     alert("You run over the rat and gets killed immediately");
+                                    (inventory.coins += 50);
+                                    alert("He dropped 50 coins. For a rat he somehow has a good amount of money");
                                     BigRat();
                                 }
                                 else{
@@ -419,6 +648,8 @@ function Game(){
                                 
                             case "step on": case "step": case "step on it":
                                 alert("You stepped on the poor defenseless rat and killed him in one hit");
+                                (inventory.coins += 50);
+                                alert("He dropped 50 coins. For a rat he somehow has a good amount of money");
                                 BigRat();
                                 break;
                                 
@@ -430,6 +661,7 @@ function Game(){
                             case "check inventory": case "inventory":
                                 checkInv();
                                 TrapDoor();
+                                break;
                                 
                             default:
                                 alert("I don't understand " + rat + ", sorry I'm not as intelligent as you might think")
@@ -439,21 +671,31 @@ function Game(){
                     
                     function BigRat(){
                         alert("Right after you defeated the rat, his big brother showed up and went to take his revenge on you");
-                        var bigRat = prompt("The big and much scarier rat is preparing to attack, it has 3hp \n -Attack with Sword \n -Mow it Down \n -Step on it \n -Run Away");
+                        var bigRat = prompt("The bigger and much scarier rat is preparing to attack, it has 3hp \n -Attack with Sword \n -Mow it Down \n -Step on it \n -Bribe \n -Run Away");
                         
                         switch(bigRat){
                             case "attack with sword": case "sword":
                                 if(inventory.sword > 0){
                                     alert("You swing your completely ordinary sword across his head and chop it off dealing two damage");
                                     alert("The rat still is alive though and rams it's body into you, you take one damage");
-                                    alert("You then stab the rat in the heart and it dies");
                                     
-                                    alert("The rat left behind some radioactive cheese");
-                                    (inventory.cheese ++);
-                                    alert("Ba dum da da! You got the radioactive cheese");
+                                    (inventory.hp --);
                                     
-                                    alert("You climb out of the sewers into a well that leads to the city");
-                                    City();
+                                    if(inventory.hp > 0){
+                                        alert("You then stab the rat in the heart and it dies. The rat left behind some radioactive cheese");
+                                        (inventory.cheese ++);
+                                        alert("Ba dum da da! You got the radioactive cheese");
+                                    
+                                        alert("You climb out of the sewers into a well that leads to the city");
+                                        City();
+                                    }
+                                    else{
+                                        (quest.deaths ++);
+                                        alert("The rat slowly absorbed you when it rammed into you. You and the rat become one, being a rat is really boring so I revived you");
+                                        City();
+                                    }
+                                    
+                                    
                                 }
                                 else{
                                     alert("I don't remember you getting a sword");
@@ -478,7 +720,7 @@ function Game(){
                                 
                             case "step on": case "step": case "step on it":
                                 alert("What do you think you can step on it, let me rephrase myself it is the giant horrifying rat that's way bigger than you.");
-                               // alert("    _..----.._                                                                                            '  .--.    "'-.(0)_          0                                                                    '"''=:|   ,  _)_ \__ . c\'''-..'    /|\                                                                           '''------''---''---'"       "/ \"");
+
                                 var stepOn = confirm("Now contemplate your actions do you actually want to attempt to step on him");
                                 if(stepOn == true){
                                     alert("you attempted to step on him, the idiot you are, and your feet get stuck in his teeth which are as big as your legs oops, and you take 1 damage");
@@ -487,14 +729,20 @@ function Game(){
                                         BigRat();
                                     }
                                     else{
-                                       alert("The rat chomped down and ate you, you then were slowly digested until your eventual death, but since I'm nice I revived you")
+                                       alert("The rat chomped down and ate you, you then were slowly digested until your eventual death, but since I'm nice I revived you but only after that slow and painful death")
                                        (inventory.hp = 3);
+                                       (quest.deaths ++);
                                        City(); 
                                     }
                                 }
-                                
-                                BigRat();
                                 break;
+                                
+                            case "bribe":
+                                alert("You offered to give him fifty coins if he forgives you");
+                                alert("The rat is desperate to get any money he can for his cause and lets you live");
+                                (inventory.coins -= 50);
+                                alert("You climb out of the sewers into a well that leads to the city");
+                                City();
                                 
                             case "run away": case "run":
                                 alert("You ran away from the very big and horrifying rat");
@@ -504,185 +752,225 @@ function Game(){
                             case "check inventory": case "inventory":
                                 checkInv();
                                 BigRat();
+                                break;
                                 
                             default:
                                 alert("I don't understand " + bigRat + ", sorry I'm not as intelligent as you might think");
                                 TrapDoor();
                     }
                     }
-                    
-                    
-                }
-                else{
-                    Dungeon();
-                }
+        
+        function Barracks(){
+            if(prisoner == true){
+                alert("Once you step inside the castle the guards recognize you and start running after you. You run back into the city but since the guards are not comitted they stop chasing you.");
+                City();
             }
-            else if(cell == "seduce guard" || cell == "seduce" || cell == "guard"){
-                // Add quest.seduce to make fun of people maniplulating game
-                if(male == true){
-                    alert("The guard is unfortuantley not gay and you were unable to seduce him");
-                    Dungeon();
-                }
-                else if(female == true){
-                    if(quest.seduced <= 0){
-                        alert("The guard fell into your trap and he came close enough to the cell that you were able to get the key off him without him noticing");
-                        (inventory.key ++);
-                        alert("Ba dum da da! You got the guard's key")
-                        (quest.seduce ++);
-                        Dungeon();
-                    }
-                    else if(quest.seduce == 1){
-                        alert("The guard fell into your trap and he came close enough to the cell that you were able to get the key off him without him noticing");
-                        (inventory.key ++);
-                        alert("Ba dum da da! You got the guard's key")
-                        (quest.seduce ++);
-                        alert("I see what you are doing, I ask you to stop immediatley");
-                        Dungeon();
-                    }
-                    else if(quest.seduce == 2){
-                        alert("The guard fell into your trap and he came close enough to the cell that you were able to get the key off him without him noticing");
-                        (inventory.key ++);
-                        alert("Ba dum da da! You got the guard's key")
-                        (quest.seduce ++);
-                        alert("Stop it! This is my game not yours, now stop manipulating it.");
-                        Dungeon();
-                }
-                   else if(quest.seduce == 3){
-                        alert("The guard fell into your trap and he came close enough to the cell that you were able to get the key off him without him noticing");
-                        (inventory.key ++);
-                        alert("Ba dum da da! You got the guard's key")
-                        (quest.seduce ++);
-                        alert("I've had enough stop it or face the consequences.");
-                        Dungeon(); 
-                   }
-                    else if(quest.seduce == 4){
-                        alert("Hah I have stopped you, no more will can you manipulate the system for keys, and I will remember this wrongdoing that you have done")
-                        (quest.seduce ++);
-                        manipulate = true
-                        Dungeon();
-                    }
-                    else if(quest.seduce == 5){
-                        alert("What did you not believe me, well believe I just went through and fixed the bug in my program so no more keys from the guard, scurry along now")
-                        (quest.seduce ++);
-                    }
-                    else{
-                        alert("I MEAN IT! Go away please, just progress with the game already")
-                    }
-                     
-                }
-                else{
-                    alert("The guard had no idea whether or not to be attracted to you, and in his confusion he did not come closer");
-                    Dungeon();
-                }
+            else{
+                alert("You are escorted to the barracks, a huge fortress like building on the outskirts of the castle. There the head guard is excited to see you exclaiming that they haven't seen people there in forever.");
+                
+                alert("He teaches you some tips about the game: You can check your inventory at any prompt by typing in 'inventory', also there's only one weapon being the sword but a lawnmower is also a popular way to attack, and if you don't have a weapon don't threat you can always run away or you might be able to find another method. Also on prompts capitalization doesn't matter, and you can even type single words and get where you need to be. Afterwards he gave you a sword for your journey");
+                (inventory.sword ++);
+                alert("Ba dum da da! You got the bland millitary issued sword");
+                
+                // Main Quest Line is told to player
+                alert("He tells you that recentley people have been no longer wanting to go on adventures, people nowadays are more boring and do not want to get themselves nearly killed, and even guards themselves have been demotivated lately which is why the search for a king has stopped in the past year");
+                alert("He says though that seeing the determination in your eyes that he feels you could be a worthy ruler all you would have to do is prove yourself is go to the Wizard's tower on top of the mountains and gain the lengendary bagel.");
+                
+                mainQuest = true;
+                
+                alert("You are escorted out of the castle with new knowledge in hand, as you walk out you getting a weird feeling from the wizard's tower it feels as if it is staring right at you");
+                City();
             }
-            else if(cell == "lock" || cell == "try lock"){
-                if(inventory.key > 0){
-                    (inventory.key --);
-                    alert("The key was so rusted that it broke while you opened the door, but the cell is open now but the guard sees you and tries to stop you");
-                    
-                    Guard();
-                    // Guard Encounter
-                    function Guard(){
-                        var guard = prompt("An ordinary prison guard appeared. He stares at you menacingly as you see him reach for his sword. He has 2hp \n -Mow him Down. \n -Attack with Sword. \n -Shout \n -Drop Kick \n -Run Away").toLowerCase();
-                        
-                        switch(guard){
-                            case "mow him down": case "mow":
-                                if(inventory.lawnMower > 0){
-                                    alert("You grab your radical lawnmower and attempt to run him over, he loses his legs in the process, but he still is able to fight, he attacks you with his sword for 1hp");   
-                                    (inventory.hp -= 1);
-                                    if(inventory.hp <= 0){
-                                        alert("You died and your skeleton rotted in the dungeons forever, but since I'm nice I revived you")
-                                        (inventory.hp = 3);
-                                        City();
-                                    }
-                                    else{
-                                        alert("You ran over him again with your radical lawnmower and he died, he dropped his sword in the process");
-                                        (inventory.sword += 1);
-                                        alert("Ba dum da da! You got the totally normal guard issued sword.");
-                                        Castle();
-                                    }
-                                }
-                                else{
-                                    alert("You don't have a lawnmower silly billy");
-                                    Guard();
-                                }
-                                break;
-                                
-                            case "attack with sword": case "sword": 
-                                if(inventory.sword > 0){
-                                    alert("You attack the guard right before he can pick up his sword, and since you caught him by surprise, he dies in one hit. You would think they would've thought to take away your weapons.")
-                                    alert("You go up the stairs which bring you into the dungeon");
-                                    Castle();
-                                }
-                                else{
-                                    alert("What? Did you suddenly think you had a sword");
-                                    Guard();
-                                }
-                                break;
-                                
-                            case "shout":
-                                alert("YOU SHOUTED AT THE GUARD! He was intimidated but he noticed you were a weakling and still attacked you");
-                                (inventory.hp -= 1);
-                                if(inventory.hp <= 0){
-                                    alert("You died and your skeleton rotted in the dungeons forever, but since I'm nice I revived you");
-                                    (inventory.hp = 3)
-                                    City();
-                                }
-                                else{
-                                    Guard();
-                                }
-                                break;
-                                
-                            case "drop kick": case "kick":
-                                alert("You caught him by surprise and knocked him down to the ground. He landed in a bed of spikes and died immediately, but in his fall he swinged his sword and attacked you for 1hp");
-                                (inventory.hp -= 1);
-                                if(inventory.hp <= 0){
-                                    alert("You died and your skeleton rotted in the dungeons forever, but since I'm nice I revived you");
-                                    (inventory.hp = 3);
-                                    City();
-                                }
-                                else{
-                                    alert("His sword is still suck in your body, you pull it out");
-                                    (inventory.sword += 1);
-                                    alert("Ba dum da da! You got the completley ordinary bloody guard issued sword");
-                                    alert("You go up the stairs which bring you into the dungeon");
-                                    Castle();
-                                }
-                                break;
-                                
-                            case "run away": case "run":
-                                alert("You attempt to run away but because the guard is blocking the exit you run back into the cell where the guard locks the door");
-                                Dungeon();
-                                break;
-                                
-                            case "check inventory": case "inventory":
-                                checkInv();
-                                Guard();
-                                
-                            default:
-                                alert("I don't understand " + guard + ".")
-                                Guard();
-                        }
-                        
-                    }
+        }
+        
+        function Mountains(){
+            alert("The way to the mountains is this long red velvet stairway that brings you around and all the way through the mountains before finally coming to the top");
+            alert("You start climbing the mountain there is no railing so you have to be careful with every step you take. You then find a large gap you must find a way across");
+            
+            Gap();
+        }
+        
+        function Gap(){
+            var gap = prompt("There is a large gap in front of you, there are some trees to your left, and what seems to be a locked door to your right. \n -Jump across \n -Cut down tree \n -Unlock Door \n -Go Back").toLowerCase();
+            
+            if(gap == "jump across" || gap == "jump"){
+                alert("You tried to jump it but you very much overestimated yourself and only made it halfway across the gap before you fell all the way to the ground and died on impact, but because I'm nice I revived you");
+                (quest.deaths ++);
+                City();
+            }
+            
+            else if(gap == "cut down tree" || gap == "cut tree" || gap == "tree" || gap == "cut"){
+                if(inventory.sword > 0){
+                    alert("You cut down the tree and placed it over the gap allowing you to cross");
+                    RatCaveEnt();
                 }
                 else{
-                    alert("The Cell was firmly locked, if only you had a key");
-                    Dungeon();
+                    alert("You don't have anything to cut the tree with, and punching it down would probably hurt more then it's worth");
+                    Gap();
                 }
             }
             
-            else if(cell == "check inventory" || cell == "inventory"){
+            else if(gap == "unlock door" || "door"){
+                if(inventory.key > 0){
+                    (inventory.key --);
+                    alert("You unlock the door with the key but as soon as you the door swings open suddenly and attacks you for one damage");
+                    (inventory.hp --);
+                    
+                    if(inventory.hp > 0){
+                        EvilDoor();
+                    }
+                    else{
+                        alert("The door smushed you into the side of mountain and now you are doomed to be mushed mess forever, but since I'm nice I revived you")
+                        (inventory.hp = 3);
+                        (quest.deaths ++);
+                        City();
+                    }
+                }
+                
+                else{
+                    alert("You try your hardest to open the door but without a key it's not going to budge");
+                    City();
+                }
+            }
+            
+            else if(gap == "go back" || "back"){
+                City();
+            }
+            
+            else if(gap == "check inventory" || "inventory"){
                 checkInv();
-                Dungeon();
+                Gap();
             }
             
             else{
-                alert("I don't understand " + cell + ", you dummy");
-                Dungeon();
+                alert("I don't understand " + gap + " is it some new kind of GenZ phrase");
             }
         }
-        function Castle(){
+        
+        function EvilDoor(){
+            var evilDoor = prompt("The Disturbed Door is ready for another attack \n -Attack with Sword \n -Mow it Down \n -Talk about its feelings \n -Run Away").toLowerCase();
+            
+            switch(evilDoor){
+                case "attack with sword": case "sword": case "attack":
+                    if(inventory.sword > 0){
+                        alert("You put all effort into hitting the door, which made a little hole into the door");
+                        alert("You did not defeat the door but nonetheless he stopped moving and allowed you to pass");
+                        TreasureCave();
+                    }
+                    else{
+                        alert("Look we gave you a million chances to get a sword by now, if you don't have one it's your fault")
+                    }
+                    break;
+                
+                case "mow it down": case "mow it": case "mow":
+                    if(inventory.lawnMower > 0){
+                        alert("You tried to ram the radical lawnmower into the door which gives you the same effect as if you rammed it into a brick wall, none");
+                        alert("The door tries to slam against you again but thankfully your radical lawnmower was in the way and stopped it");
+                        EvilDoor();
+                    }
+                    else{
+                        alert("Sorry but you can't bring in your real life lawnmower for this, this uses the digital radical lawnmower that is in this game");
+                        EvilDoor();
+                    }
+                    break;
+                    
+                case "talk about its feelings": case "talk about feelings": case "talk feelings": case "talk": case "feelings":
+                    alert("You asked the disturbed door what it was upset about, and right when it was about to tell you it forgot and quickly realised he shouldn't be so disturbed and let you pass.");
+                    TreasureCave();
+                    break;
+                    
+                case "run away": case "run":
+                    Gap();
+                    break;
+                    
+                case "check inventory": case "inventory":
+                    checkInv();
+                    EvilDoor();
+                    break;
+                    
+                default:
+                    alert("I don't understand " + evilDoor + ", I'm just gonna assume you weren't a straight A student.");
+                    EvilDoor();
+            }
+        }
+        
+        function TreasureCave(){
+            alert("You went through the door into a small cave which makes a bend past the gap and allows you to continue on your journey. You also see a treasure chest on your way and decide to open it");
+            (inventory.potion ++);
+            alert("Ba dum da da! You found a potion! I have no idea what it does though");
+            RatCaveEnt();
+        }
+        
+        function RatCaveEnt(){
+            alert("Once on the other side you see the entrance to a big cavern with some ratmen guarding the way");
+            if(inventory.cheese > 0){
+                alert("Ratmen: He has the cheese get him!");
+                RatMen();
+            }
+            else{
+                alert("The ratmen see you, they sniff you for a minute and decide you are free to go inside.")
+                RatCity();
+            }
+        }
+        
+        function RatMen(){
+            var ratMen = prompt("The tiny Ratmen are ready to kill you for your cheese \n -Attack with Sword \n -Mow them down \n -Give them Cheese \n -Run Away").toLowerCase();
+            switch(ratMen){
+                case "attack with sword": case "sword": case "attack":
+                    alert("You grab your sword and kill the entire squad with one hit, your sword strike was so strong it destroyed the entire rat city and part of the mountains now the only thing that is left is the wizard tower");
+                    WizTower();
+                    break;
+                    
+                case "mow them down": case "mow them": case "mow":
+                    alert("You turned on your lawnmower and they all ran away as you just rammed into rat after rat, what a ratslaughter.");
+                    alert("You then rampaged through the entire rat city leaving nothing in your waste, until you got to the wizard tower");
+                    WizTower();
+                    break;
+                    
+                case "give them cheese": case "give cheese": case "give": case "cheese":
+                    alert("You gave the rats the radioative cheese and they thank you for your efforts and bring you to the rat king");
+                    RatCastle();
+                    break;
+                    
+                case "run away": case "run":
+                    Gap();
+                    break;
+                    
+                default:
+                    alert("Even though you are fighting ratmen right now " + ratMen + " still doesn't apply");
+                    RatMen();
+            }
+        }
+        
+        function RatCity(){
+            var ratCity = prompt("Inside the cave you see a huge city for the rats, it looks like a rat empire has been built in here. Unfortunatley most of the buildings are too small for you to enter except for a few those being the castle, and a shop off to the side, you also see the exit to the city which brings you right to the Wizard Tower \n -Go to Castle \n -Visit Shop \n Onwards to the Tower \n Back to Gap").toLowerCase();
+            if(ratCity == "go to castle" || ratCity == "castle"){
+                RatCastle();
+            }
+            else if(ratCity == "visit shop" || ratCity == "shop"){
+                RatShop();
+            }
+            else if(ratCity == "onwards to the tower" || ratCity == "tower" || ratCity == "onwards to tower" || ratCity == "onwards" || ratCity == "go to tower"){
+                WizTower();
+            }
+            else if(ratCity == "back to gap" || ratCity == "gap" || ratCity == "back"){
+                Gap();
+            }
+            else if(ratCity == "check inventory" || ratCity == "inventory"){
+                checkInv();
+                RatCity();
+            }
+        }
+        
+        function RatCastle(){
+            
+        }
+        
+        function RatShop(){
+            alert("");
+        }
+        
+        function WizTower(){
             
         }
     }
