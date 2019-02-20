@@ -30,7 +30,10 @@ var inventory = {
     lawnMower: 0,
     hp: 3,
     cheese: 0,
-    potion: 0
+    potion: {
+        health: 0, poison: 0, mystery: 0, secret: 0
+    }   
+        
 }
 
 var quest = {
@@ -896,7 +899,7 @@ function Game(){
         
         function TreasureCave(){
             alert("You went through the door into a small cave which makes a bend past the gap and allows you to continue on your journey. You also see a treasure chest on your way and decide to open it");
-            (inventory.potion ++);
+            (inventory.potion.secret ++);
             alert("Ba dum da da! You found a potion! I have no idea what it does though");
             RatCaveEnt();
         }
@@ -943,11 +946,11 @@ function Game(){
         }
         
         function RatCity(){
-            var ratCity = prompt("Inside the cave you see a huge city for the rats, it looks like a rat empire has been built in here. Unfortunatley most of the buildings are too small for you to enter except for a few those being the castle, and a shop off to the side, you also see the exit to the city which brings you right to the Wizard Tower \n -Go to Castle \n -Visit Shop \n Onwards to the Tower \n Back to Gap").toLowerCase();
+            var ratCity = prompt("Inside the cave you see a huge city for the rats, it looks like a rat empire has been built in here. Unfortunatley most of the buildings are too small for you to enter except for a few those being the castle, and a potion shop off to the side, you also see the exit to the city which brings you right to the Wizard Tower \n -Go to Castle \n -Visit Potion Shop \n Onwards to the Tower \n Back to Gap").toLowerCase();
             if(ratCity == "go to castle" || ratCity == "castle"){
                 RatCastle();
             }
-            else if(ratCity == "visit shop" || ratCity == "shop"){
+            else if(ratCity == "visit potion shop" || ratCity == "shop" || ratCity == "potion shop"){
                 RatShop();
             }
             else if(ratCity == "onwards to the tower" || ratCity == "tower" || ratCity == "onwards to tower" || ratCity == "onwards" || ratCity == "go to tower"){
@@ -966,8 +969,30 @@ function Game(){
             
         }
         
-        function RatShop(){
-            alert("");
+        function RatShop(){ 
+            alert("bRATty: Welcome to bRATty's potions, we have all types of potions for you kind of folk.");
+            if(inventory.potion.secret > 0){
+                alert("bRATty: It looks like you have a really unique potion in your possesion, unfortunatly I don't what it does, but make sure to keep it close. I feel as if it could hinder an overpowering mind, whatever that means.");
+            }
+            else{
+                var ratShop = prompt("What would you like to buy \n -Health Potion 100 coins \n -Poisonous Potion 150 coins \n -Mystery Potion 400 coins").toLowerCase();
+                if(ratShop == "health potion" || "health"){
+                    var healthPotion = confim("A potion that restores guess what your health, yay!");
+                }
+                else if(ratShop == "poisonous potion" || ratShop == "poisonous" || ratShop == "poison" || ratShop == "poison potion"){
+                    var poisonPotion = confim("A potion that is poisonous, to use when someone has made you really mad");
+                }
+                else if(ratShop == "mystery potion" || ratShop == "mystery" || ratShop == "potion"){
+                    var mysteryPotion = confirm("This potion is a mystery even to me only use it if you are desparate");
+                }
+                else if(ratShop == "check inventory" || "inventory"){
+                    
+                }
+                else{
+                    alert("We may have all types of potion but not anything like " + ratShop);
+                    RatShop();
+                }        
+            }
         }
         
         function WizTower(){
