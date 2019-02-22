@@ -52,6 +52,7 @@ var manipulate = false;
 var boring = false;
 var prisoner = false;
 var mainQuest = false;
+var cheeseGiven = false;
 
 
 // declare array
@@ -361,15 +362,22 @@ function Game(){
             }
             else if(shop == "magic but rusted key" || shop == "magic key" || shop == "rusted key" || shop == "key"){
                 var buyKey = confirm("Tom: This key can unlock any door but it's very rusted so it will disinigrate after one use, only 50 coins!");
-                if(buyKey ==  true){
-                    if(inventory.coins >= 50){
-                        (inventory.coins -= 50);
-                        (inventory.key += 1);
-                        alert("Ba dum da da! You got the magic but rusted key!")
+                
+                if(buyKey == true){
+                    var buyKeys = prompt("How many keys would you look to buy");
+                
+                    var keyOverallPrice = buyKeys * 50 
+                
+                    if(inventory.coins >= keyOverallPrice){
+                                    
+                    for(i = 1; i <= buyKeys; i++){
+                        inventory.key ++;
+                        inventory.coins -= 50;
+                    }
                         Shop();
                     }
                     else{
-                        alert("Tom: You don't have enough money, what are you trying to do, ROB ME!");
+                        alert("We are not running a charity here come back when you get more money");
                         Shop();
                     }
                 }
@@ -966,32 +974,98 @@ function Game(){
         }
         
         function RatCastle(){
-            
+            if(inventory.cheese > 0){
+                alert("Inside the castle you see a humongus rat probably 2 times the size of the last big rat you saw");
+                alert("King RATtley: Thank you for returning our cheese to us, some rebels earlier stole our cheese but now we can continue our plans for world domination. You will now be an honored guest here, please enjoy your stay and here's a reward");
+                (inventory.cheese = 0);
+                (inventory.coins += 400);
+                alert("Ba dum da da! You got 400 coins, can't wait for you to spend it all later");
+                cheeseGiven = true;
+            }
+            else if(cheeseGiven == true){
+                
+            }
+            else{
+                
+            }
         }
         
         function RatShop(){ 
             alert("bRATty: Welcome to bRATty's potions, we have all types of potions for you kind of folk.");
             if(inventory.potion.secret > 0){
                 alert("bRATty: It looks like you have a really unique potion in your possesion, unfortunatly I don't what it does, but make sure to keep it close. I feel as if it could hinder an overpowering mind, whatever that means.");
+                RatBuy();
             }
             else{
-                var ratShop = prompt("What would you like to buy \n -Health Potion 100 coins \n -Poisonous Potion 150 coins \n -Mystery Potion 400 coins").toLowerCase();
-                if(ratShop == "health potion" || "health"){
-                    var healthPotion = confim("A potion that restores guess what your health, yay!");
+                RatBuy();
+                function RatBuy(){
+                    var ratShop = prompt("What would you like to buy \n -Health Potion 100 coins \n -Poisonous Potion 150 coins \n -Mystery Potion 400 coins \n -Leave Shop").toLowerCase();
+                    if(ratShop == "health potion" || "health"){
+                        var healthPotion = confim("A potion that restores guess what your health, yay! It costs 100 coins, would you like to buy it?");
+                        if(healthPotion == true){
+                            if(inventory.coins >= 100){
+                                (inventory.coins -= 100);
+                                (inventory.potion.health ++);
+                                RatBuy();
+                            }
+                            else{
+                                alert("I'm sorry we don't serve poor people here");
+                                RatBuy();
+                            }
+                        }
+                        else{
+                            RatBuy();
+                        }
+                    }
+                    else if(ratShop == "poisonous potion" || ratShop == "poisonous" || ratShop == "poison" || ratShop == "poison potion"){
+                        var poisonPotion = confim("A potion that is poisonous, to use when someone has made you really mad, most people who buy this are never see again! Would you like to buy it, only 150 coins?");
+                        if(poisonPotion == true){
+                            if(inventory.coins >= 150){
+                                (inventory.coins -= 150);
+                                (inventory.potion.poison ++);
+                                RatBuy();
+                            }
+                            else{
+                                alert("I'm sorry we don't serve poor people here");
+                                RatBuy();
+                            }
+                        }
+                        else{
+                            RatBuy();
+                        }
+                    }
+                    else if(ratShop == "mystery potion" || ratShop == "mystery" || ratShop == "potion"){
+                        var mysteryPotion = confirm("This potion is a mystery even to me only use it if you are desparate");
+                        while(!confirm("Are you sure you want this potion I can't guarantee anything?")){
+                            RatBuy();
+                        }
+                        if(mysteryPotion == true){
+                            if(inventory.coins >= 400){
+                                (inventory.coins -= 400);
+                                (inventory.potion.mystery ++);
+                                RatBuy();
+                            }
+                            else{
+                                alert("I'm sorry we don't serve poor people here");
+                                RatBuy();
+                            }
+                        }
+                        else{
+                            RatBuy();
+                        }
+                    }
+                    else if(ratShop == "check inventory" || "inventory"){
+                        checkInv();
+                        RatBuy();
+                    }
+                    else if(ratShop == "leave shop" || ratShop == "leave"){
+                        RatCity();
+                    }
+                    else{
+                        alert("We may have all types of potion but not anything like " + ratShop);
+                        RatBuy();
+                    }        
                 }
-                else if(ratShop == "poisonous potion" || ratShop == "poisonous" || ratShop == "poison" || ratShop == "poison potion"){
-                    var poisonPotion = confim("A potion that is poisonous, to use when someone has made you really mad");
-                }
-                else if(ratShop == "mystery potion" || ratShop == "mystery" || ratShop == "potion"){
-                    var mysteryPotion = confirm("This potion is a mystery even to me only use it if you are desparate");
-                }
-                else if(ratShop == "check inventory" || "inventory"){
-                    
-                }
-                else{
-                    alert("We may have all types of potion but not anything like " + ratShop);
-                    RatShop();
-                }        
             }
         }
         
