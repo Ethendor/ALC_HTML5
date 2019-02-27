@@ -22,6 +22,11 @@ var checkInv = function(){
     alert("Coins: " + inventory.coins + "\n Keys: " + inventory.key + "\n Swords: " + inventory.sword + "\n Lawnmowers: " + inventory.lawnMower + "\n HP: " + inventory.hp);
 }
 
+var deathScreen = function(){
+    alert("Oops I guessed you have died, while I was able to revive you the first time, you're not so fortuante this time. Now don't get me wrong I could revive you again, but I'm too lazy so.... Game Over");
+    deathScreen();
+}
+
 // declare inventory
 var inventory = {
     coins: 400,
@@ -976,17 +981,20 @@ function Game(){
         function RatCastle(){
             if(inventory.cheese > 0){
                 alert("Inside the castle you see a humongus rat probably 2 times the size of the last big rat you saw");
-                alert("King RATtley: Thank you for returning our cheese to us, some rebels earlier stole our cheese but now we can continue our plans for world domination. You will now be an honored guest here, please enjoy your stay and here's a reward");
+                alert("King RATtley: Thank you for returning our cheese to us, now we can continue our plans for world domination. You will now be an honored guest here, please enjoy your stay and here's a reward");
                 (inventory.cheese = 0);
                 (inventory.coins += 400);
                 alert("Ba dum da da! You got 400 coins, can't wait for you to spend it all later");
                 cheeseGiven = true;
+                RatCity();
             }
             else if(cheeseGiven == true){
-                
+                alert("Welcome again "+ jeffName + " the honorable! I don't have anything new for you and humans kinda bore me so I would like you to leave please");
+                RatCity();
             }
             else{
-                
+                alert("Hi " + jeffName + " the sorceror told me you would be coming. I would like you to help us out with something, recentley we got out radioactive cheese stolen by some rebels if you can get back our cheese I can reward you greatly. Now  go off, if you are wondering where they are, they should be sewers inside the dungeons down in Taliman");
+                RatCity();
             }
         }
         
@@ -1070,7 +1078,46 @@ function Game(){
         }
         
         function WizTower(){
+            var wizTower = confirm("You stand at the tower your journey about to come to an end, would you like to go inside, once you go you can't go back");
             
+            if(wizTower == true){
+                WizStairway();
+            }
+            else{
+                RatCity();
+            }
         }
+        
+        function WizStairway(){
+            var wizStairway = prompt("You step inside the tower and you see an amazing huge red spiral staircase that goes around the whole tower! And a very boring wooden ladder, each seem to lead to the same place except one option is way cooler than the other. \n -Go up Staircase \n -Go up Ladder").toLowerCase();
+            
+            // Don't Choose this one
+            if(wizStairway == "go up staircase" || wizStairway == "up staircase"|| wizStairway == "staircase" || wizStairway == "stairs"){
+                alert("You went up the amazing huge red spiral staircase");
+                alert("Yep you're going up alright, how epic");
+                alert("This is definetley a very red staircase, you can't tell what material it is, only that it's red");
+                alert("Well this is where the huge part of the staircase comes in");
+                alert("Don't worry you're still walking up");
+                alert("Ok I think you forgot to realize that stairway that does around the whole tower is a lot of land to cover");
+                alert("Oh sweet you're already halfway! Keep on moving");
+                alert("Ok well just remember the cool option is not always the best option");
+                alert("Hey look at the bright side at least there are no enemies here wouldn't that be a stinker");
+                var rating = prompt("How do you like my flavor text on a scale of 1-10, I'm trying really hard to write this right now, so any feedback would be nice");
+                alert("")
+                WizTopFloor();
+            }
+            else if(wizStairway == "go up ladder" || wizStairway == "ladder" || wizStairway == "up ladder"){
+                alert("You went up the boring wooden ladder but it didn't take too long only after a minute or two you made it to the top");
+                WizTopFloor();
+            }
+            else{
+                alert("I do not see any "+ wizStairway +"s in here");
+                WizStairway();
+            }
+        }
+        
+    function WizTopFloor(){
+        
+    }
     }
 }
