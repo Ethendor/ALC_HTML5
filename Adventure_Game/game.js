@@ -53,8 +53,10 @@ var guardDeath = false;
 var bigRatDeath = false;
 var doorDeath = false;
 
+// Declared float because I had to, seriously though this is completley useless to me but I will still use it somewhere
+var jeffPercentage = 99.999;
 
-// Declare an array because you forced me to use one
+// Declared an array because you forced me to use one go check the inn function forthe one time I use it
 var npcNames = ["Jeffory", "Steven", "Bob", "Darius", "Courtney"];
 
 
@@ -98,6 +100,9 @@ function Game(){
     
     alert("Well " + jeffName + " your adventure is about to begin in the wonderful land of Cloudborg, I hope you're ready for the most exciting adventure yet!");
     
+    // I used a float yay!
+    alert("Don't worry " + jeffName + " you have a " + String(jeffPercentage) + " percent chance of becoming the real life " + jeffName + " someday.")
+    
     City();
     
     // Game Begins
@@ -124,8 +129,15 @@ function Game(){
         }
         
         else if(city == "travel to ground" || city == "ground"){
-            alert("You Jumped off the Cloud you were on and died on impact, Silly " + jeffName + " what did you think was gonna happen, I can revive you if you would like");
-            City();
+            if(quest.deaths <= 0){
+                alert("You Jumped off the Cloud you were on and died on impact, Silly " + jeffName + " what did you think was gonna happen, I can revive you if you would like");
+                (quest.deaths += 1);
+                City();
+            }
+            else{
+                deathScreen();
+            }
+            
         }
         
         else if(city == "check inventory" || city == "inventory"){
@@ -1001,7 +1013,7 @@ function Game(){
         
         // RatCity was gonna be much more indepth but I didn't have any time, as it is, it serves it's base purpose
         function RatCity(){
-            var ratCity = prompt("Inside the cave you see a huge city for the rats, it looks like a rat empire has been built in here. Unfortunatley most of the buildings are too small for you to enter except for a few those being the castle, and a potion shop off to the side, you also see the exit to the city which brings you right to the Wizard Tower \n -Go to Castle \n -Visit Potion Shop \n Onwards to the Tower \n Back to Gap").toLowerCase();
+            var ratCity = prompt("Inside the cave you see a huge city for the rats, it looks like a rat empire has been built in here. Unfortunatley most of the buildings are too small for you to enter except for a few those being the castle, and a potion shop off to the side, you also see the exit to the city which brings you right to the Wizard Tower \n -Go to Castle \n -Visit Potion Shop \n -Onwards to the Tower \n -Back to Gap").toLowerCase();
             if(ratCity == "go to castle" || ratCity == "castle"){
                 RatCastle();
             }
@@ -1235,9 +1247,9 @@ function Game(){
             judged = true;
             EndGameCheck();
         }
-        else if(cheeseGiven == true){
+        else if(cheeseGiven == false){
             alert("I make this absolutely great side quest with rat kingdoms and rebels and you don't even bat an eye towards to it. To be fair it wasn't fully developed as much as I wished it was, that's what happens when you have a deadline but you could've at least expieranced it and there was something to do it just wasn't much. Look making a game is hardwork and you don't even care!");
-            var cheeseGiven = false;
+            var cheeseGiven = true;
             judged = true;
             EndGameCheck();
         }
@@ -1249,7 +1261,7 @@ function Game(){
         }
         else if(mainQuest == false){
             alert("Wow I'm really surprised you made your way all the way up here without even being given the main quest in where it tells you to do so, did you really just ignore aspects of my game and so much and wanted to skip to the end. Or are you just like wow mountains with big scary tower on top, that sounds really fun. Seriously though stop rushing through games and then call them too short, you're the reason the games industry is only filled with buggy 60 hour open world slog fests of games.");
-            var mainQuest == false;
+            var mainQuest = false;
             judged = true;
             EndGameCheck();
         }
@@ -1266,7 +1278,7 @@ function Game(){
         }
     }
         
-    // Big Fight that super short because of time and lack of creativity at time
+    // Big Fight that is super short because of time and lack of creativity at time
     // Ok I'm really sorry about complaining about time so much, I understand why the deadline was there so I don't blame you, I'll promise to stop complaining now, mostly because the code is almost done
     function ComputerFight(){
         alert("The fight with the absolute megamind computer has begun, be prepared for anything.");
