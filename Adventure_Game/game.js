@@ -1,27 +1,14 @@
-// Commenting, Yay!
-/*
-Commenting
-On
-Multiple
-Lines,
-Yay!
-*/
+// Tales of Ethendoria
 
-// alert("Warning will self destruct!")
+// I used if statements for normal decisions
+// I used switch statements for enemy encounters
 
-// confirm("Do you want to die?")
-
-// prompt("What type of death would you prefer")
-
-// var playerName = prompt("What is your name!")
-
-// document.write(playerName)
-
-
+//Checks Inventory
 var checkInv = function(){
     alert("Coins: " + inventory.coins + "\n Keys: " + inventory.key + "\n Swords: " + inventory.sword + "\n Lawnmowers: " + inventory.lawnMower + "\n HP: " + inventory.hp);
 }
 
+//Sends player to infinite loop after dying twice, also techinically a bad ending
 var deathScreen = function(){
     alert("Oops I guessed you have died, while I was able to revive you the first time, you're not so fortuante this time. Now don't get me wrong I could revive you again, but I'm too lazy so.... Game Over");
     deathScreen();
@@ -41,6 +28,7 @@ var inventory = {
         
 }
 
+// Useful for determining where they are in quests
 var quest = {
     guild : 0,
     seduced: 0,
@@ -58,9 +46,15 @@ var boring = false;
 var prisoner = false;
 var mainQuest = false;
 var cheeseGiven = false;
+var judged = false;
+
+// Deaths
+var guardDeath = false;
+var bigRatDeath = false;
+var doorDeath = false;
 
 
-// declare array
+// Declare an array because you forced me to use one
 var npcNames = ["Jeffory", "Steven", "Bob", "Darius", "Courtney"];
 
 
@@ -145,6 +139,7 @@ function Game(){
             Shop();
         }
         
+        // Just incase players need to go to castle but have gotten themselves arrested
         else if(city == "house" || city == "go in house" || city == "sketchy house" || city == "go in sketchy house"){
             alert("You go inside you see a very dark room with a sketchy man in the corner on a desk with what seems to be a ton of paperwork");
             if(prisoner == true){
@@ -239,6 +234,7 @@ function Game(){
                                 
                             case "run": case "run away":
                                 // Set cowards to true, similar to boring
+                                // Neither this or boring was actually used lol
                                 var coward = true;
                                 alert("You ran back to the inn apologizing to the guild they tell you it's alright because grass can be pretty scary, but you were denied your pay from the guild");
                                 Inn();
@@ -266,12 +262,13 @@ function Game(){
                     
                 }
                 else if (quest.guild == 1){
-                    var guild2 = confirm("Dalamas: " + jeffName + " back for another quest are ya, well you came just in time, we have another situation, some more folks needs some cutting are ya in.");
+                    var guild2 = confirm("Dalamas: Sorry bud we don't have any more quests for ya, but you were awesome, you keep cutting that grass like always");
+                    Inn();
                 }
             
             }
             
-            // Boring Lore Politics
+            // Boring Lore filler Politics but funny dialog, at least I think it's funny
             else if(inn == "chat with barkeeper" || inn == "barkeeper" || inn == "chat"){
                 alert("Courtney: Hi I'm " + npcNames[4] + "! I'm the master of this joint right here, now you just sit down you must have tons of adventures to tell me about!");
                 
@@ -299,7 +296,7 @@ function Game(){
                 }
             }
             
-            // Funny thief
+            // Funny thief, I don't know why I implemented this, I guess I was feeling like a jerk that day
             else if(inn == "sleep"){
                 (inventory.hp = 3)
                 if (inventory.coins > 0){
@@ -327,6 +324,7 @@ function Game(){
             }
         }
         
+        // Shop where you buy stuff, what else is there to it
         function Shop(){
             var shop = prompt("What would you like to buy \n -Ordinary Sword, 200 coins \n -Radical Lawnmower, 100 coins \n -Magic but rusted Key, 50 coins \n -Back to City").toLowerCase();
             if(shop == "ordinary sword" || shop == "sword"){
@@ -374,7 +372,8 @@ function Game(){
                     var keyOverallPrice = buyKeys * 50 
                 
                     if(inventory.coins >= keyOverallPrice){
-                                    
+                    
+                    // Use of 'for' loop to buy multiple keys
                     for(i = 1; i <= buyKeys; i++){
                         inventory.key ++;
                         inventory.coins -= 50;
@@ -458,6 +457,8 @@ function Game(){
                     Dungeon();
                 }
             }
+            
+            // Very huge if statement to check what gender and if they are manipulating the key spawn
             else if(cell == "seduce guard" || cell == "seduce" || cell == "guard"){
                 if(male == true){
                     alert("The guard is unfortuantley not gay and you were unable to seduce him");
@@ -550,10 +551,16 @@ function Game(){
                                 alert("You grab your radical lawnmower and attempt to run him over, he loses his legs in the process, but he still is able to fight, he attacks you with his sword for 1hp");   
                                 (inventory.hp -= 1);
                                  if(inventory.hp <= 0){
-                                    alert("You died and your skeleton rotted in the dungeons forever, but since I'm nice I revived you")
-                                    (inventory.hp = 3);
-                                    (quest.deaths ++);
-                                    City();
+                                    if(quest.deaths <= 0){
+                                        alert("You died and your skeleton rotted in the dungeons forever, but since I'm nice I revived you")
+                                        (inventory.hp = 3);
+                                        (quest.deaths ++);
+                                        guardDeath = true
+                                        City();
+                                        }
+                                     else{
+                                         deathScreen();
+                                     }  
                                 }
                                 else{
                                     alert("You ran over him again with your radical lawnmower and he died, he dropped his sword in the process");
@@ -585,11 +592,17 @@ function Game(){
                             alert("YOU SHOUTED AT THE GUARD! He was intimidated but he noticed you were a weakling and still attacked you");
                             (inventory.hp -= 1);
                             if(inventory.hp <= 0){
-                                alert("You died and your skeleton rotted in the dungeons forever, but since I'm nice I revived you");
-                                (inventory.hp = 3)
-                                (quest.deaths ++);
-                                City();
-                            }
+                                    if(quest.deaths <= 0){
+                                        alert("You died and your skeleton rotted in the dungeons forever, but since I'm nice I revived you")
+                                        (inventory.hp = 3);
+                                        (quest.deaths ++);
+                                        var guardDeath = true
+                                        City();
+                                        }
+                                     else{
+                                         deathScreen();
+                                     }  
+                                }
                             else{
                                 Guard();
                             }
@@ -599,11 +612,17 @@ function Game(){
                             alert("You caught him by surprise and knocked him down to the ground. He landed in a bed of spikes and died immediately, but in his fall he swinged his sword and attacked you for 1hp");
                             (inventory.hp -= 1);
                             if(inventory.hp <= 0){
-                                alert("You died and your skeleton rotted in the dungeons forever, but since I'm nice I revived you");
-                                (inventory.hp = 3);
-                                (quest.deaths ++);
-                                City();
-                            }
+                                    if(quest.deaths <= 0){
+                                        alert("You died and your skeleton rotted in the dungeons forever, but since I'm nice I revived you")
+                                        (inventory.hp = 3);
+                                        (quest.deaths ++);
+                                        var guardDeath = true
+                                        City();
+                                        }
+                                     else{
+                                         deathScreen();
+                                     }  
+                                }
                             else{
                                 alert("His sword is still suck in your body, you pull it out");
                                 (inventory.sword += 1);
@@ -630,7 +649,7 @@ function Game(){
                         
                 }
         
-        
+                    // Rat Encounter
                     function TrapDoor(){
                         alert("You entered the trapdoor leading you to a cellar. The cellar is very dark and you can see water running through it, while traveling across you encounter a normally sized rat.");
                         var rat = prompt("The normally sized rat looks ready to attack at any time! \n -Attack with Sword \n -Mow it Down \n -Step on it \n -Run Away").toLowerCase();
@@ -685,6 +704,7 @@ function Game(){
                         }
                     }
                     
+                    // BigRat encounter
                     function BigRat(){
                         alert("Right after you defeated the rat, his big brother showed up and went to take his revenge on you");
                         var bigRat = prompt("The bigger and much scarier rat is preparing to attack, it has 3hp \n -Attack with Sword \n -Mow it Down \n -Step on it \n -Bribe \n -Run Away");
@@ -706,11 +726,16 @@ function Game(){
                                         City();
                                     }
                                     else{
-                                        (quest.deaths ++);
-                                        alert("The rat slowly absorbed you when it rammed into you. You and the rat become one, being a rat is really boring so I revived you");
-                                        City();
+                                        if(quest.deaths <= 0){
+                                            (quest.deaths ++);
+                                            alert("The rat slowly absorbed you when it rammed into you. You and the rat become one, being a rat is really boring so I revived you");
+                                            var bigRatDeath = true 
+                                            City();
+                                        }
+                                        else{
+                                            deathSceen();
+                                        }
                                     }
-                                    
                                     
                                 }
                                 else{
@@ -745,10 +770,16 @@ function Game(){
                                         BigRat();
                                     }
                                     else{
-                                       alert("The rat chomped down and ate you, you then were slowly digested until your eventual death, but since I'm nice I revived you but only after that slow and painful death")
-                                       (inventory.hp = 3);
-                                       (quest.deaths ++);
-                                       City(); 
+                                        if(quest.deaths <= 0){
+                                             alert("The rat chomped down and ate you, you then were slowly digested until your eventual death, but since I'm nice I revived you but only after that slow and painful death")
+                                            (inventory.hp = 3);
+                                            (quest.deaths ++);
+                                            var bigRatDeath = true
+                                            City();
+                                        }
+                                        else{
+                                            deathScreen();
+                                        }
                                     }
                                 }
                                 break;
@@ -799,6 +830,7 @@ function Game(){
             }
         }
         
+        // Journey to Tower Starts
         function Mountains(){
             alert("The way to the mountains is this long red velvet stairway that brings you around and all the way through the mountains before finally coming to the top");
             alert("You start climbing the mountain there is no railing so you have to be careful with every step you take. You then find a large gap you must find a way across");
@@ -836,10 +868,16 @@ function Game(){
                         EvilDoor();
                     }
                     else{
-                        alert("The door smushed you into the side of mountain and now you are doomed to be mushed mess forever, but since I'm nice I revived you")
-                        (inventory.hp = 3);
-                        (quest.deaths ++);
-                        City();
+                        if(quest.deaths <= 0){
+                            alert("The door smushed you into the side of mountain and now you are doomed to be mushed mess forever, but since I'm nice I revived you")
+                            (inventory.hp = 3);
+                            (quest.deaths ++);
+                            var doorDeath = true;
+                            City();
+                        }
+                        else{
+                            deathScreen();
+                        }
                     }
                 }
                 
@@ -863,6 +901,7 @@ function Game(){
             }
         }
         
+        // I was having writer's block with this one and was unable to make the encounter as funny as I wanted, I do make fun of myself a bit though
         function EvilDoor(){
             var evilDoor = prompt("The Disturbed Door is ready for another attack \n -Attack with Sword \n -Mow it Down \n -Talk about its feelings \n -Run Away").toLowerCase();
             
@@ -910,6 +949,7 @@ function Game(){
             }
         }
         
+        // I needed a funny whatchamacallit to defeat the computer with and this was my best idea, I wish I was more creative
         function TreasureCave(){
             alert("You went through the door into a small cave which makes a bend past the gap and allows you to continue on your journey. You also see a treasure chest on your way and decide to open it");
             (inventory.potion.secret ++);
@@ -929,6 +969,7 @@ function Game(){
             }
         }
         
+        // Another encounter where you can't die at, what is this the third. I made this game way too easy.
         function RatMen(){
             var ratMen = prompt("The tiny Ratmen are ready to kill you for your cheese \n -Attack with Sword \n -Mow them down \n -Give them Cheese \n -Run Away").toLowerCase();
             switch(ratMen){
@@ -958,6 +999,7 @@ function Game(){
             }
         }
         
+        // RatCity was gonna be much more indepth but I didn't have any time, as it is, it serves it's base purpose
         function RatCity(){
             var ratCity = prompt("Inside the cave you see a huge city for the rats, it looks like a rat empire has been built in here. Unfortunatley most of the buildings are too small for you to enter except for a few those being the castle, and a potion shop off to the side, you also see the exit to the city which brings you right to the Wizard Tower \n -Go to Castle \n -Visit Potion Shop \n Onwards to the Tower \n Back to Gap").toLowerCase();
             if(ratCity == "go to castle" || ratCity == "castle"){
@@ -978,6 +1020,7 @@ function Game(){
             }
         }
         
+        // This entire questline was gonna be so cool, but because of deadlines I was only able to get the bare minium done
         function RatCastle(){
             if(inventory.cheese > 0){
                 alert("Inside the castle you see a humongus rat probably 2 times the size of the last big rat you saw");
@@ -998,6 +1041,7 @@ function Game(){
             }
         }
         
+        // Buy Potions, yay, and most of these don't have a purpose because I was never able to finish the RatKingdom. Thank you so much Mr. Powell for the deadline, really cool!
         function RatShop(){ 
             alert("bRATty: Welcome to bRATty's potions, we have all types of potions for you kind of folk.");
             if(inventory.potion.secret > 0){
@@ -1077,6 +1121,7 @@ function Game(){
             }
         }
         
+        // Finally start the endgame tower climb
         function WizTower(){
             var wizTower = confirm("You stand at the tower your journey about to come to an end, would you like to go inside, once you go you can't go back");
             
@@ -1102,13 +1147,28 @@ function Game(){
                 alert("Oh sweet you're already halfway! Keep on moving");
                 alert("Ok well just remember the cool option is not always the best option");
                 alert("Hey look at the bright side at least there are no enemies here wouldn't that be a stinker");
-                var rating = prompt("How do you like my flavor text on a scale of 1-10, I'm trying really hard to write this right now, so any feedback would be nice");
-                alert("")
+                var rating = prompt("How do you like my flavor text on a scale of 1-5, I'm trying really hard to write this right now, so any feedback would be nice");
+                var ratingPrompt = true;
+                // Halfway through alerts
+                alert("As you walk up further for some reason it gets hotter, like you can really feel the sunshine as it brightens up your day.");
+                alert("Ok I think I have my point across by now but I still feel like giving you a few more text boxes");
+                alert("As you walk up you also hear a piano get louder as it sounds more and more threatening");
+                alert("The entire thing is supposed to get you to feel terrified so I hope it's working");
+                alert("You're nearing the top you can see the light come from a door above");
+                alert("Right about now you're so tired that you're walking up so slowly");
+                alert("But don't worry you're almost there, I think");
+                alert("You're crawling at this point one step at a time hoping to make any progress");
+                alert("One last step and you're there");
+                alert("Yay you did it! You finally made it up, I'm proud of you!");
                 WizTopFloor();
             }
             else if(wizStairway == "go up ladder" || wizStairway == "ladder" || wizStairway == "up ladder"){
                 alert("You went up the boring wooden ladder but it didn't take too long only after a minute or two you made it to the top");
                 WizTopFloor();
+            }
+            else if(wizStairway == "check inventory" || wizStairway == "inventory"){
+                checkInv();
+                WizStairway();
             }
             else{
                 alert("I do not see any "+ wizStairway +"s in here");
@@ -1116,8 +1176,125 @@ function Game(){
             }
         }
         
+    // The really clever mastermind that I was building up because I definetley had enough time to do that is revealed
     function WizTopFloor(){
+        alert("You open a grand door into a big room where you see a huge long Black Box connected to some speakers where the piano sound was coming out of. You see a green light on the box begin to move as it started to speak");
+        alert("Welcome to my tower "+ jeffName + " I have been leading you here throughout the entire game, my creation! Some refer to me as the grand Sorceror as my powers are beyond belief as this is my world I can do anything I wish");
+        var saved = confirm("So before you face me in our final showdown would you like to save your game.");
+        if(saved == true){
+            alert("Ha you actually think I'm smart enough to be able to have you save, of course not, that crap is complicated besides your playing this on a browser where would I even store it, I just wanted to make this encounter feel more epic by giving you the choice");
+            FinalEncounter();
+        }
+        else{
+            alert("Wow confident are we, well then I hope you're ready.");
+            FinalEncounter();
+        }
+    }
         
+    function FinalEncounter(){
+        alert("Now it is time for me to verbally assualt you!");
+        alert("The very impressive awesome computer with cool flashing lights sponsored by hp, 'attacked' you");
+        alert("Now I'm going to calculate your progress in this game, how well you did, and lots of other factors I have kept track of to make sure if you deserve victory or not. Now I'll begin");
+        alert("Calculating.....Calculating.....Calculating");
+        alert("Ok we are here lets see if you truly deserve victory");
+        EndGameCheck();
+    }
+    // Huge If Statement that checks all the little things that you have done throughout the game. Not even this was indepth as I originally wanted it to be but time constraints are always fun.
+    function EndGameCheck(){
+        if(quest.deaths > 0){
+            alert("First of all this game that I made so easy that baby gamers could beat you somehow died on. Seriously I make this epic world and story driven game with the encounters being very silly and you still somehow died to one of them.");
+            if(guardDeath == true){
+                alert("Wow you even died to the most boring encounter in the game it's just a normal generic guard guy you see everywhere. that's what you let kill you?");
+                (quest.deaths = 0);
+                judged = true;
+                EndGameCheck();
+            }
+            else if(bigRatDeath == true){
+                alert("Ok maybe I don't blame you too much the rat encounter I made was pretty huge and horrifying, but he still wasn't that hard you have two instant win options against him");
+                (quest.deaths = 0);
+                judged = true;
+                EndGameCheck();
+            }
+            else if(doorDeath == true){
+                alert("You died to a fricking door opening on you, you realize how silly that is, you honestley can't take a door flying open. How do you even live inside the house you live in.");
+                (quest.deaths = 0);
+                judged = true;
+                EndGameCheck();
+            }
+            else{
+                alert("Wow you didn't even die to an encounter you just thought it would be a great idea to just jump off the cliff you were on, you big fricking idiot, I don't even know what to say to that");
+                (quest.deaths = 0);
+                judged = true;
+                EndGameCheck();
+            }
+        }
+        else if(quest.guild == 0){
+            alert("You completley ignored one of the epic quests I put in your way but no, your hasty butt was like I'm just gonna skip through everything and get to the end. Look I spent time setting up that quest with the guild and you just are like no, do you even care about the world that I built, are you just so mindless that you try to beat them as quickly as possible.");
+            alert("Especially you Mr. Powell, I know you are gonna be speed playing through these games just trying to grade them quickly not caring about the actual content that I put in it!");
+            (quest.guild --);
+            judged = true;
+            EndGameCheck();
+        }
+        else if(cheeseGiven == true){
+            alert("I make this absolutely great side quest with rat kingdoms and rebels and you don't even bat an eye towards to it. To be fair it wasn't fully developed as much as I wished it was, that's what happens when you have a deadline but you could've at least expieranced it and there was something to do it just wasn't much. Look making a game is hardwork and you don't even care!");
+            var cheeseGiven = false;
+            judged = true;
+            EndGameCheck();
+        }
+        else if(manipulate == true){
+            alert("Ok this makes me the most mad, you think you have the right to go play my game and find a bug and manipulate it to your heart's content, you must think you're really funny oh look at this I'll have fifty keys by the time I'm done lol. Well guess what it's not funny and you're really undermining my work you piece of garbage!");
+            var manipulate = false;
+            judged = true;
+            EndGameCheck();
+        }
+        else if(mainQuest == false){
+            alert("Wow I'm really surprised you made your way all the way up here without even being given the main quest in where it tells you to do so, did you really just ignore aspects of my game and so much and wanted to skip to the end. Or are you just like wow mountains with big scary tower on top, that sounds really fun. Seriously though stop rushing through games and then call them too short, you're the reason the games industry is only filled with buggy 60 hour open world slog fests of games.");
+            var mainQuest == false;
+            judged = true;
+            EndGameCheck();
+        }
+        else if(judged == true){
+            alert("Well it looks like you do not deserve victory but don't worry I'll have one final battle with you, a chance to redeem yourself if you will.");
+            ComputerFight();
+        }
+        else{
+            // Best Ending, no one will get this, unless they are awesome
+            alert("Well wow you have done an amazing job seriously I have found nothing to critisize about how you played so... yeah just go grab the bagel thingy and be off your merry way.");
+            alert("Ba dum da da! You got the Legendary Bagel, now even though it is very tasty make sure not to eat it.");
+            alert("You made your way back to the castle and you were declared king, how amazing for you.");
+            alert("Yeah I guess that's all I have for right now congrats on beating the game, make sure to pick up the sequel, Tales of Ethendoria 2: Even more grass monsters!");
+        }
+    }
+        
+    // Big Fight that super short because of time and lack of creativity at time
+    // Ok I'm really sorry about complaining about time so much, I understand why the deadline was there so I don't blame you, I'll promise to stop complaining now, mostly because the code is almost done
+    function ComputerFight(){
+        alert("The fight with the absolute megamind computer has begun, be prepared for anything.");
+        alert("To be fair to you I'm gonna analyze you to see if you even have a chance of defeating me, if you don't I'll just kill you immediatley there's no point of even having you try.");
+        
+        if(inventory.potion.secret > 0){
+            alert("Oh crap oh no, you have my only weakness don't come any closer with that potion. I'll do anything as long as you don't use that potion! I'll even call you "+ playerName +" again, how does that sound");
+            var usePotion = confirm("Will you use the secret potion that he's pointing at.");
+            // Good Ending
+            if(usePotion == true){
+                alert("You opened up the potion and poored it all over the computer completley destroying him.");
+                alert("Well good job you have defeated me, YAY! Unfortunatley for you I'm the only reason why this world exsists so now I'm gonna disappear and this game with it, see ya.");
+            }
+            // Another good ending
+            else{
+                alert("You didn't use the potion and you now with all the power in the relationship you have free reign over how the entire game works. Now you can open the game file in a code editor and just have at it you, as the new master mind.");
+            }
+        }
+        else{
+            alert("Well I checked, sorry you're just too weak so KAZAM!");
+            ComputerDeathScreen();
+        }
+    }
+        
+    // Bad Ending
+    function ComputerDeathScreen(){
+        alert("You died lol, well you're kinda screwed so I don't know what to say except not to suck next time.");
+        ComputerDeathScreen();
     }
     }
 }
